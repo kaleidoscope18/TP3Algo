@@ -177,7 +177,7 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
 {
     if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
 
-    std::unordered_map<const unsigned int *, std::pair<Noeud *, unsigned int *>> sommetsNodes;
+    std::unordered_map<const unsigned int *, std::pair<Noeud *, const unsigned int *>> sommetsNodes;
    // std::unordered_map<ptr_sommet depart dans m_arcs, std::pair<ptr_noeud associé au sommet dans le heap, ptr_sommet predecesseur>> sommetsNodes;
     PairingHeap heap; //constructeur par defaut
     // dans le heap chaque Noeud a la distance et le sommet associé au noeud
@@ -193,8 +193,8 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
     //  heap.ajoutNoeud(ptr vers sommet, distance du sommet)
     }
 
-    const unsigned int * ptr_sommetOrigine = &m_arcs.find(numOrigine);
-    const unsigned int * ptr_sommetDest = &m_arcs.find(numDest);
+    const unsigned int * ptr_sommetOrigine = &(m_arcs.find(numOrigine)->first);
+    const unsigned int * ptr_sommetDest = &(m_arcs.find(numDest)->first);
 
     if(sommetsNodes.find(ptr_sommetOrigine) != sommetsNodes.end()){ //le sommet est censé exister
     	std::cout << "ca marche ici" << std::endl; //TODO Retirer cette ligne
@@ -207,7 +207,7 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
 
     	// liste_arcs sommetsVoisins = m_arcs[sommetMin];
     	for(auto sommetVoisin : m_arcs[sommetMin]){
-    		unsigned int * ptr_sommetVoisin = &sommetVoisin;
+    		const unsigned int * ptr_sommetVoisin = &(sommetVoisin.first);
     		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first;
     		int dist = sommetsNodes.find(ptr_sommetVoisin)->second.first->getDistance();
     		if(temp < dist){

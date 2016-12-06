@@ -123,7 +123,7 @@ std::vector<unsigned int> GestionnaireInvestigation::plus_court_chemin_dijsktra(
 			throw std::logic_error("gettimeofday() a échoué");
 
 	std::vector<unsigned int> chemin;
-	m_reseau.dijkstra(num_station_depart, num_station_dest, chemin);
+	m_reseau.meilleurPlusCourtChemin(num_station_depart, num_station_dest, chemin);
 
 	if (gettimeofday(&tv2, 0) != 0)
 			throw std::logic_error("gettimeofday() a échoué");

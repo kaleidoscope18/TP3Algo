@@ -176,74 +176,6 @@ int Reseau::getTypeArc(unsigned int numOrigine, unsigned int numDest) const thro
 int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
 {
     if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
-
-    std::unordered_map<const unsigned int *, std::pair<Noeud *, const unsigned int *>> sommetsNodes;
-   // std::unordered_map<ptr_sommet depart dans m_arcs, std::pair<ptr_noeud associé au sommet dans le heap, ptr_sommet predecesseur>> sommetsNodes;
-    PairingHeap heap; //constructeur par defaut
-    // dans le heap chaque Noeud a la distance et le sommet associé au noeud
-    unsigned int max_poids = std::numeric_limits<int>::max();
-
-    unsigned int noeud_min;
-    int temp;
-
-    for(auto kv: m_arcs){
-    	const unsigned int * ptr_sommet = &(kv.first);
-    	sommetsNodes[ptr_sommet] = std::pair<Noeud *, unsigned int *>(heap.ajoutNoeud(ptr_sommet, max_poids), 0);
-    //  sommetsNode[sommet] = std::pair<ptr vers noeud du sommet, sommet predecesseur>
-    //  heap.ajoutNoeud(ptr vers sommet, distance du sommet)
-    }
-
-    const unsigned int * ptr_sommetOrigine = &(m_arcs.find(numOrigine)->first);
-    const unsigned int * ptr_sommetDest = &(m_arcs.find(numDest)->first);
-
-    if(sommetsNodes.find(ptr_sommetOrigine) != sommetsNodes.end()){ //le sommet est censé exister
-    	std::cout << "ca marche ici" << std::endl; //TODO Retirer cette ligne
-    	heap.diminuerDistanceNoeud((sommetsNodes.find(ptr_sommetOrigine))->second.first, 0);
-    }
-
-    for(int i = 0; i < nbSommets; i++){
-    	unsigned int sommetMin = *(heap.getRacine()->getSommet()); //noeud dans Q tel que d(u) est minimal = racine du heap
-    	std::cout << "le sommet associé a la racine est :" << sommetMin << std::endl;
-
-    	// liste_arcs sommetsVoisins = m_arcs[sommetMin];
-    	for(auto sommetVoisin : m_arcs[sommetMin]){
-    		const unsigned int * ptr_sommetVoisin = &(sommetVoisin.first);
-    		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first;
-    		int dist = sommetsNodes.find(ptr_sommetVoisin)->second.first->getDistance();
-    		if(temp < dist){
-    			heap.diminuerDistanceNoeud(sommetsNodes.find(ptr_sommetVoisin)->second.first, dist); //on change la distance du sommet voisin
-    			sommetsNodes.find(ptr_sommetVoisin)->second.second = (heap.getRacine()->getSommet()); //on change le predecesseur
-    		}
-    	}
-    	heap.supprimerRacine(); //la racine est maintenant solutionnée
-    }
-//
-//    chemin.clear();
-//    if(predecesseurs[numDest] != -1){
-//    	std::vector<unsigned int> chemin_inverse;
-//		int courant = numDest;
-//		while(courant!=-1){
-//			chemin_inverse.push_back(courant);
-//			courant = predecesseurs[courant];
-//		}
-//		for(int i=chemin_inverse.size() -1; i >= 0; i--){
-//			chemin.push_back(chemin_inverse[i]);
-//		}
-//    }
-//    return distances[numDest];
-}
-
-/*!
- * \brief Algorithme de Dijkstra en O(nlogn)  permettant de trouver le plus court chemin entre deux noeuds du graphe
- * \param[in] numOrigine: le sommet d'où le chemin part
- * \param[in] numDest: le sommet que le chemin est censé atteindre
- * \param[out] chemin:  le vecteur contenant le chemin trouvé s'il y en existe un
- * \exception logic_error si un des sommets n'existe pas
- * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
- */
-int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
-{
-    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
     std::unordered_map<unsigned int, int> distances;
     std::unordered_map<unsigned int, int> predecesseurs;
     std::unordered_set<unsigned int> Q;
@@ -294,6 +226,75 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 		}
     }
     return distances[numDest];
+}
+
+/*!
+ * \brief Algorithme de Dijkstra en O(nlogn)  permettant de trouver le plus court chemin entre deux noeuds du graphe
+ * \param[in] numOrigine: le sommet d'où le chemin part
+ * \param[in] numDest: le sommet que le chemin est censé atteindre
+ * \param[out] chemin:  le vecteur contenant le chemin trouvé s'il y en existe un
+ * \exception logic_error si un des sommets n'existe pas
+ * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
+ */
+int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
+{
+    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
+
+    std::unordered_map<const unsigned int *, std::pair<Noeud *, const unsigned int *>> sommetsNodes;
+   // std::unordered_map<ptr_sommet depart dans m_arcs, std::pair<ptr_noeud associé au sommet dans le heap, ptr_sommet predecesseur>> sommetsNodes;
+    PairingHeap heap; //constructeur par defaut
+    // dans le heap chaque Noeud a la distance et le sommet associé au noeud
+    unsigned int max_poids = std::numeric_limits<int>::max();
+
+    for(auto kv: m_arcs){
+    	const unsigned int * ptr_sommet = &(kv.first);
+    	sommetsNodes[ptr_sommet] = std::pair<Noeud *, unsigned int *>(heap.ajoutNoeud(ptr_sommet, max_poids), 0);
+    //  sommetsNode[sommet] = std::pair<ptr vers noeud du sommet, sommet predecesseur>
+    //  heap.ajoutNoeud(ptr vers sommet, distance du sommet)
+    }
+
+    const unsigned int * ptr_sommetOrigine = &(m_arcs.find(numOrigine)->first);
+    const unsigned int * ptr_sommetDest = &(m_arcs.find(numDest)->first);
+
+    if(sommetsNodes.find(ptr_sommetOrigine) != sommetsNodes.end()){ //le sommet est censé exister
+    	std::cout << "ca marche ici" << std::endl; //TODO Retirer cette ligne
+    	heap.diminuerDistanceNoeud((sommetsNodes.find(ptr_sommetOrigine))->second.first, 0);
+    }
+
+    for(int i = 0; i < nbSommets; i++){
+    	unsigned int sommetMin = *(heap.getRacine()->getSommet()); //noeud dans Q tel que d(u) est minimal = racine du heap
+    	std::cout << "le sommet associé a la racine est :" << sommetMin << std::endl;
+
+    	// liste_arcs sommetsVoisins = m_arcs[sommetMin];
+    	for(auto sommetVoisin : m_arcs[sommetMin]){
+    		const unsigned int * ptr_sommetVoisin = &(sommetVoisin.first);
+    		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first;
+    		int dist = sommetsNodes.find(ptr_sommetVoisin)->second.first->getDistance();
+    		if(temp < dist){
+    			heap.diminuerDistanceNoeud(sommetsNodes.find(ptr_sommetVoisin)->second.first, dist); //on change la distance du sommet voisin
+    			sommetsNodes.find(ptr_sommetVoisin)->second.second = (heap.getRacine()->getSommet()); //on change le predecesseur
+    		}
+    	}
+    	heap.supprimerRacine(); //la racine est maintenant solutionnée
+    }
+
+    chemin.clear();
+    if(sommetsNodes.find(ptr_sommetDest)->second.second == 0){
+    	std::cout << "le sommet de destination n'est pas atteignable" << std::endl;
+    }
+    else{
+    	std::vector<unsigned int> chemin_inverse;
+    	const unsigned int * courant = ptr_sommetDest;
+    	while(courant != ptr_sommetOrigine){
+    		chemin_inverse.push_back(*courant);
+    		courant = sommetsNodes.find(courant)->second.second;
+    	}
+    	for(auto i : chemin_inverse){
+    		chemin.push_back(i);
+    	}
+    }
+
+    return sommetsNodes.find(ptr_sommetDest)->second.first->getDistance();
 }
 
 /*!

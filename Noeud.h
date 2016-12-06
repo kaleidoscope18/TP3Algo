@@ -13,7 +13,7 @@
 
 class Noeud{ //modifier la classe pour que les attributs deviennent privÃ©s
 	public:
-		Noeud (const int & dist, int * ptr_sommet);
+		Noeud (const int & dist, const unsigned int * ptr_sommet);
 		bool operator>(Noeud * noeud);
 		bool operator<(Noeud * noeud);
 		virtual ~Noeud();
@@ -23,15 +23,15 @@ class Noeud{ //modifier la classe pour que les attributs deviennent privÃ©s
 		void setEnfantGauche(Noeud * enfantGauche);
 		Noeud * getMaitre() const;
 		void setMaitre(Noeud* maitre);
-		int * getSommet() const;
-		void setSommet(int* sommet);
+		const unsigned int * getSommet() const;
+		void setSommet(const unsigned int * sommet);
 		Noeud * getVoisin() const;
 		void setVoisin(Noeud* voisin);
 	private:
 		int m_distance; //key est la valeur comparable qui est la distance
 		Noeud * m_enfantGauche;
 		Noeud * m_voisin; //voisin de droite plus precisement
-		int * m_sommet;
+		const unsigned int * m_sommet;
 		Noeud * m_maitre;
 };
 

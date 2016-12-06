@@ -23,6 +23,7 @@
  *
  */
 typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
+//liste_arcs est <sommet destination <poids, type>> ??
 
 
 /*!

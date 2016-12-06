@@ -26,7 +26,7 @@ void PairingHeap::setRacine(Noeud * nouvRacine){
 	this->m_racine = nouvRacine; //TODO verifier sil a un maitre ?
 }
 
-void PairingHeap::ajoutNoeud(int * ptr_sommet, const int & distance){ //TODO a verifier
+Noeud * PairingHeap::ajoutNoeud(const unsigned int * ptr_sommet, const int & distance){ //TODO a verifier
 
 	Noeud * nouvNoeud = new Noeud { distance, ptr_sommet };
 
@@ -40,7 +40,8 @@ void PairingHeap::ajoutNoeud(int * ptr_sommet, const int & distance){ //TODO a v
 	else{
 		fusionner(racineActuelle, nouvNoeud);
 	}
-	++nbNoeuds; //on a plus de noeuds
+	++nbNoeuds;
+	return nouvNoeud;
 }
 
 /*

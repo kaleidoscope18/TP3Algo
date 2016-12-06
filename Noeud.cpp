@@ -11,8 +11,8 @@
 /*
  * Chaque noeud a un sommet qui lui est associé dans le réseau
  */
-Noeud::Noeud(const int & dist, const unsigned int * ptr_sommet) :
-		m_distance(dist), m_enfantGauche(0), m_voisin(0), m_sommet(ptr_sommet), m_maitre(0) {
+Noeud::Noeud(const int & dist, const unsigned int & sommet) :
+		m_distance(dist), m_enfantGauche(nullptr), m_voisin(nullptr), m_sommet(sommet), m_maitre(nullptr) {
 }
 
 Noeud::~Noeud() {
@@ -42,11 +42,11 @@ void Noeud::setMaitre(Noeud * maitre) {
 	m_maitre = maitre;
 }
 
-const unsigned int * Noeud::getSommet() const {
+const unsigned int & Noeud::getSommet() const {
 	return m_sommet;
 }
 
-void Noeud::setSommet(const unsigned int * sommet) {
+void Noeud::setSommet(const unsigned int sommet) {
 	m_sommet = sommet;
 }
 

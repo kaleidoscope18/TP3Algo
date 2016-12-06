@@ -9,7 +9,7 @@ class PairingHeap{
 		bool estVide();
 		Noeud * fusionPassePasse(Noeud * noeud);
 		void supprimerRacine();
-		Noeud * ajoutNoeud(const unsigned int * ptr_sommet, const int & distance);
+		Noeud * ajoutNoeud(const unsigned int & sommet, const int & distance);
 		Noeud * getRacine();
 		int nombreNoeuds();
 		void setRacine(Noeud * nouvRacine);

@@ -240,61 +240,68 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 {
     if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
 
-    std::unordered_map<const unsigned int *, std::pair<Noeud *, const unsigned int *>> sommetsNodes;
-   // std::unordered_map<ptr_sommet depart dans m_arcs, std::pair<ptr_noeud associé au sommet dans le heap, ptr_sommet predecesseur>> sommetsNodes;
+    std::unordered_map<unsigned int, std::pair<Noeud *, unsigned int>> sommetsNodes;
+   // std::unordered_map<sommet depart, std::pair<ptr_noeud associé au sommet dans le heap, predecesseur>> sommetsNodes;
     PairingHeap heap; //constructeur par defaut
     // dans le heap chaque Noeud a la distance et le sommet associé au noeud
-    unsigned int max_poids = std::numeric_limits<int>::max();
-
+    unsigned int max_poids = 10000; //std::numeric_limits<int>::max();
+    unsigned int le_sommet = 0;
     for(auto kv: m_arcs){
-    	const unsigned int * ptr_sommet = &(kv.first);
-    	sommetsNodes[ptr_sommet] = std::pair<Noeud *, unsigned int *>(heap.ajoutNoeud(ptr_sommet, max_poids), 0);
+    	le_sommet = (kv.first);
+    	std::cout << " " << kv.first;
+    	sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajoutNoeud(le_sommet, max_poids), 0);
     //  sommetsNode[sommet] = std::pair<ptr vers noeud du sommet, sommet predecesseur>
     //  heap.ajoutNoeud(ptr vers sommet, distance du sommet)
     }
 
-    const unsigned int * ptr_sommetOrigine = &(m_arcs.find(numOrigine)->first);
-    const unsigned int * ptr_sommetDest = &(m_arcs.find(numDest)->first);
+    unsigned int sommetOrigine = m_arcs.find(numOrigine)->first;
+    std::cout << sommetOrigine << std::endl;
+    unsigned int sommetDest = m_arcs.find(numDest)->first;
 
-    if(sommetsNodes.find(ptr_sommetOrigine) != sommetsNodes.end()){ //le sommet est censé exister
-    	std::cout << "ca marche ici" << std::endl; //TODO Retirer cette ligne
-    	heap.diminuerDistanceNoeud((sommetsNodes.find(ptr_sommetOrigine))->second.first, 0);
+    if(sommetsNodes.find(sommetOrigine) != sommetsNodes.end()){ //le sommet est censé exister
+    	std::cout << std::endl << "le sommet existe bel et bien et sa distance :" << std::endl; //TODO Retirer cette ligne
+    	std::cout << sommetsNodes[sommetOrigine].first->getDistance() << std::endl; //TODO Retirer cette ligne
+    	heap.diminuerDistanceNoeud(sommetsNodes[sommetOrigine].first, 0);
+    	std::cout << "la racine est : " << heap.getRacine()->getDistance() << std::endl;
     }
 
     for(int i = 0; i < nbSommets; i++){
-    	unsigned int sommetMin = *(heap.getRacine()->getSommet()); //noeud dans Q tel que d(u) est minimal = racine du heap
-    	std::cout << "le sommet associé a la racine est :" << sommetMin << std::endl;
+    	std::cout << "iteration" << i << std::endl;
+    	unsigned int sommetMin = heap.getRacine()->getSommet(); //noeud dans Q tel que d(u) est minimal = racine du heap
+//    	std::cout << "le sommet associé a la racine est :" << sommetMin << std::endl;
 
     	// liste_arcs sommetsVoisins = m_arcs[sommetMin];
     	for(auto sommetVoisin : m_arcs[sommetMin]){
-    		const unsigned int * ptr_sommetVoisin = &(sommetVoisin.first);
     		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first;
-    		int dist = sommetsNodes.find(ptr_sommetVoisin)->second.first->getDistance();
+    		int dist = sommetsNodes[sommetVoisin.first].first->getDistance();
     		if(temp < dist){
-    			heap.diminuerDistanceNoeud(sommetsNodes.find(ptr_sommetVoisin)->second.first, dist); //on change la distance du sommet voisin
-    			sommetsNodes.find(ptr_sommetVoisin)->second.second = (heap.getRacine()->getSommet()); //on change le predecesseur
+    			heap.diminuerDistanceNoeud(sommetsNodes[sommetVoisin.first].first, dist); //on change la distance du sommet voisin
+    			std::cout << sommetMin << "est le sommet avec distance minimale" << std::endl;
+    			sommetsNodes[sommetVoisin.first].second = sommetMin; //on change le predecesseur
+    			std::cout << sommetsNodes[sommetVoisin.first].second << "est supposé etre le sommet indique juste au dessus" << std::endl;
     		}
     	}
     	heap.supprimerRacine(); //la racine est maintenant solutionnée
     }
 
     chemin.clear();
-    if(sommetsNodes.find(ptr_sommetDest)->second.second == 0){
+    if(sommetsNodes[sommetDest].second == 0){
     	std::cout << "le sommet de destination n'est pas atteignable" << std::endl;
     }
     else{
     	std::vector<unsigned int> chemin_inverse;
-    	const unsigned int * courant = ptr_sommetDest;
-    	while(courant != ptr_sommetOrigine){
-    		chemin_inverse.push_back(*courant);
-    		courant = sommetsNodes.find(courant)->second.second;
+    	unsigned int courant = sommetDest;
+    	while(courant != sommetOrigine){
+    		chemin_inverse.push_back(courant);
+    		courant = sommetsNodes[courant].second;
     	}
+    	chemin.push_back(sommetOrigine);
     	for(auto i : chemin_inverse){
     		chemin.push_back(i);
     	}
     }
 
-    return sommetsNodes.find(ptr_sommetDest)->second.first->getDistance();
+    return 0; //sommetsNodes.find(ptr_sommetDest)->second.first->getDistance();
 }
 
 /*!

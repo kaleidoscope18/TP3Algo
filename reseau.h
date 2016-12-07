@@ -11,7 +11,8 @@
 #include <new>
 #include <limits>
 #include <algorithm>
-#include "PairingHeap.h"
+
+#include "PairingH.h"
 #include "station.h"
 
 #ifndef Reseau__H

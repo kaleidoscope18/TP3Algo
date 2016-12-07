@@ -1,38 +1,33 @@
 /*
  * Noeud.h
  *
- *  Created on: 2016-12-05
- *      Author: Nadia
+ *  Created on: 2016-12-07
+ *      Author: etudiant
  */
 
 #ifndef NOEUD_H_
 #define NOEUD_H_
-
-
+#include <stdexcept>
 #include <iostream>
+class Noeud
+{
+private:
+	int distance;
+	unsigned int m_sommet;
+	Noeud *enfantGauche;
+	Noeud *voisin;
+	Noeud *maitre;
 
-class Noeud{ //modifier la classe pour que les attributs deviennent privÃ©s
-	public:
-		Noeud (const int & dist, const unsigned int & sommet);
-		bool operator>(Noeud * noeud);
-		bool operator<(Noeud * noeud);
-		virtual ~Noeud();
-		int getDistance() const;
-		void setDistance(int distance);
-		Noeud * getEnfantGauche() const;
-		void setEnfantGauche(Noeud * enfantGauche);
-		Noeud * getMaitre() const;
-		void setMaitre(Noeud* maitre);
-		const unsigned int & getSommet() const;
-		void setSommet(const unsigned int sommet);
-		Noeud * getVoisin() const;
-		void setVoisin(Noeud* voisin);
-	private:
-		int m_distance; //key est la valeur comparable qui est la distance
-		Noeud * m_enfantGauche;
-		Noeud * m_voisin; //voisin de droite plus precisement
-		unsigned int m_sommet;
-		Noeud * m_maitre;
+public:
+	Noeud(const int & dist, const unsigned int & sommet) : distance(distance), m_sommet(sommet),
+	  enfantGauche(NULL), voisin(NULL), maitre(NULL) { }
+
+	Noeud * getVoisin();
+	int getDistance();
+	Noeud * getEnfantGauche();
+	unsigned int getSommet();
+
+	friend class PairingH;
 };
 
 #endif /* NOEUD_H_ */

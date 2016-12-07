@@ -1,6 +1,6 @@
 #include "reseau.h"
-#include "PairingHeap.h"
 #include <map>
+#include "PairingH.h"
 
 /*!
  * \brief constructeur par défaut d'un réseau. Crée un réseau vide.

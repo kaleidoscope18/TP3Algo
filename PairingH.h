@@ -22,9 +22,12 @@ class PairingH
 	Noeud *ajouterNoeud(const int & dist, const unsigned int & sommet);
 	void retirerRacine();
 	void diminuerDistance(Noeud *p, const int & nouvDistance);
+	int nombreNoeuds() const;
+	void parcoursDOT(Noeud * p_debut) const;
 
   private:
 	Noeud *racine;
+	static int nbNoeuds;
 	void fusionner(Noeud * & first, Noeud *second) const;
 	Noeud * fusionPassePasse(Noeud *firstSibling) const;
 };

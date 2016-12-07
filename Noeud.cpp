@@ -9,7 +9,6 @@
 
 Noeud::Noeud(const int & dist, const unsigned int & sommet) : distance(distance), m_sommet(sommet),
 	  enfantGauche(NULL), voisin(NULL), maitre(NULL){
-
 }
 
 Noeud * Noeud::getVoisin(){

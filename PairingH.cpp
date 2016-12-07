@@ -9,6 +9,8 @@
 #include <vector>
 #include "PairingH.h"
 
+int PairingH::nbNoeuds { 0 };
+
 /**
  * Constructeur par défaut
  */
@@ -25,10 +27,16 @@ PairingH::PairingH(const PairingH & nouvPH)
 	*this = nouvPH;
 }
 /**
+ * Retourne le nombre de noeuds dans le monceau
+ */
+int PairingH::nombreNoeuds() const
+{
+	return nbNoeuds;
+}
+/**
  * ajouter un noeud dans le heap tout en conservant les propriétés du heap
  * Return un pointeur vers l'objet Noeud créé
  */
-
 Noeud * PairingH::ajouterNoeud(const int & dist, const unsigned int & sommet)
 {
 	Noeud *newNoeud = new Noeud(dist, sommet);
@@ -38,6 +46,7 @@ Noeud * PairingH::ajouterNoeud(const int & dist, const unsigned int & sommet)
 	else
 		fusionner(racine, newNoeud); //sinon, on doit s'assurer que le noeud se place au bon endroit et que le heap
 									// respecte les règles du heap-min
+	++nbNoeuds;
 	return newNoeud;
 }
 /**
@@ -63,6 +72,7 @@ void PairingH::retirerRacine()
 	else
 		racine = fusionPassePasse(racine->getEnfantGauche()); //on doit refaire le heap pour s'assurer
 															 // de respecter les règles du monceau (min-heap)
+	--nbNoeuds;
 	delete oldracine;
 }
 /**
@@ -87,7 +97,7 @@ void PairingH::diminuerDistance(Noeud *p, const int & nouvDistance)
 		if(p->voisin != NULL)
 			p->voisin->maitre = p->maitre;
 		if(p->maitre->getEnfantGauche() == p)
-			p->maitre->getEnfantGauche() = p->voisin;
+			p->maitre->enfantGauche = p->voisin;
 		else
 			p->maitre->voisin = p->voisin;
 
@@ -116,7 +126,7 @@ void PairingH::fusionner(Noeud * & A, Noeud *B) const
 		A->voisin = B->enfantGauche;
 		if(A->voisin != NULL)
 			A->voisin->maitre = A;
-		B->getEnfantGauche() = A;
+		B->enfantGauche = A;
 		A = B; //B est devenu la racine, donc A prend la place de l'enfant gauche de B
 	}
 	else { //B va devenir l'enfant gauche de A
@@ -127,7 +137,7 @@ void PairingH::fusionner(Noeud * & A, Noeud *B) const
 		B->voisin = A->getEnfantGauche();
 		if(B->voisin != NULL)
 			B->voisin->maitre = B;
-		A->getEnfantGauche() = B; //A reste la racine ici
+		A->enfantGauche = B; //A reste la racine ici
 	}
 }
 
@@ -174,4 +184,35 @@ Noeud * PairingH::fusionPassePasse(Noeud * voisinImmediat) const
             fusionner(sousMonceaux[j-2], sousMonceaux[j]);
         return sousMonceaux[0];
     }
+}
+/*
+ * On peut redessiner avec https://stamm-wilbrandt.de/GraphvizFiddle/ (visualisation du heap)
+ */
+void PairingH::parcoursDOT(Noeud * p_debut) const
+{
+	if(p_debut->getEnfantGauche() != NULL){
+		Noeud * noeudKid = p_debut->getEnfantGauche();
+		std::cout << p_debut->getDistance() << " -> " << noeudKid->getDistance() << " [color=blue]" << std::endl;
+		std::cout << noeudKid->getDistance() << " -> " << p_debut->getDistance() << " [color=black]" << std::endl;
+		if(noeudKid->getVoisin() != NULL){
+			Noeud * noeudKidVoisin = noeudKid->getVoisin();
+			std::cout << noeudKid->getDistance() << " -> " << noeudKidVoisin->getDistance() << " [color=red]"<< std::endl;
+			std::cout << "{rank = same; " << noeudKid->getDistance() << "; "<< noeudKidVoisin->getDistance() << ";}" << std::endl;
+			std::cout << noeudKidVoisin->getDistance() << " -> " << p_debut->getDistance() << " [color=black]" << std::endl;
+			while(noeudKidVoisin != NULL){
+				if(noeudKidVoisin->getEnfantGauche() != NULL){
+					parcoursDOT(noeudKidVoisin);
+				}
+				if(noeudKidVoisin->getVoisin() != NULL){
+					std::cout << noeudKidVoisin->getDistance() << " -> " << noeudKidVoisin->getVoisin()->getDistance() << " [color=red]"<< std::endl;
+					std::cout << "{rank = same; " << noeudKidVoisin->getDistance() << "; "<< noeudKidVoisin->getVoisin()->getDistance() << ";}" << std::endl;
+					std::cout << noeudKidVoisin->getVoisin()->getDistance() << " -> " << p_debut->getDistance() << " [color=black]" << std::endl;
+				}
+				noeudKidVoisin = noeudKidVoisin->getVoisin();
+			}
+		}
+		if(noeudKid->getEnfantGauche() != NULL){
+			parcoursDOT(noeudKid);
+		}
+	}
 }

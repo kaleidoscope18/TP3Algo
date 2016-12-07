@@ -19,8 +19,7 @@ private:
 	Noeud *maitre;
 
 public:
-	Noeud(const int & dist, const unsigned int & sommet) : distance(distance), m_sommet(sommet),
-	  enfantGauche(NULL), voisin(NULL), maitre(NULL) { }
+	Noeud(const int & dist, const unsigned int & sommet);
 
 	Noeud * getVoisin();
 	int getDistance();

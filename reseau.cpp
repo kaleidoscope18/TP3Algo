@@ -243,20 +243,22 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 
     std::unordered_map<unsigned int, std::pair<Noeud *, unsigned int>> sommetsNodes;
    // std::unordered_map<sommet depart, std::pair<ptr_noeud associé au sommet dans le heap, predecesseur>> sommetsNodes;
-    PairingHeap heap; //constructeur par defaut
+
+    PairingH heap; //constructeur par defaut
     // dans le heap chaque Noeud a la distance et le sommet associé au noeud
+
     unsigned int max_poids = 9999999;
 
     for(auto kv: m_arcs){
     	unsigned int le_sommet = (kv.first);
     	if(le_sommet == numOrigine){
-    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajoutNoeud(le_sommet, 0), 0);
+    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(le_sommet, 0), 0);
     	}
     	else{
-    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajoutNoeud(le_sommet, max_poids), 0);
+    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(le_sommet, max_poids), 0);
     	}
     }
-//    std::cout << "taille du heap : " << heap.nombreNoeuds() << std::endl; //4604
+    std::cout << "taille du heap : " << heap.nombreNoeuds() << std::endl; //4604
 
     for(int i = 0; i < nbSommets; i++){ // 2 ---nbSommets
 //    	std::cout << heap.getRacine()->getDistance() << std::endl;
@@ -267,14 +269,11 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 //    		std::cout << "le temp => " << heap.getRacine()->getDistance() << "+" << sommetVoisin.second.first << " = " << temp << std::endl;
     		int dist = sommetsNodes[sommetVoisin.first].first->getDistance();
     		if(temp < dist){
-//    			std::cout << "on a un decrease ici!" << std::endl;
-    			heap.diminuerDistanceNoeud(sommetsNodes[sommetVoisin.first].first, temp); //on change la distance du sommet voisin
+    			heap.diminuerDistance(sommetsNodes[sommetVoisin.first].first, temp); //on change la distance du sommet voisin
     			sommetsNodes[sommetVoisin.first].second = sommetMin; //on change le predecesseur
-//    			std::cout << "decrease done!" << std::endl;
     		}
     	}
-    	std::cout << i << std::endl;
-    	heap.supprimerRacine(); //la racine est maintenant solutionnée
+    	heap.retirerRacine(); //la racine est maintenant solutionnée
 //    	std::cout << "la racine est " << heap.getRacine()->getSommet() << "et sa distance est " << heap.getRacine()->getDistance() << std::endl;
     }
 

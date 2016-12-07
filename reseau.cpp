@@ -264,6 +264,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 //    	std::cout << heap.getRacine()->getDistance() << std::endl;
     	unsigned int sommetMin = heap.getRacine()->getSommet(); //noeud dans Q tel que d(u) est minimal = racine du heap
     	liste_arcs arcs = m_arcs[sommetMin];
+    	heap.retirerRacine(); //la racine est maintenant solutionnée
     	for(auto sommetVoisin : arcs){
     		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first; //est ce que le poids est le 2param..
 //    		std::cout << "le temp => " << heap.getRacine()->getDistance() << "+" << sommetVoisin.second.first << " = " << temp << std::endl;
@@ -273,7 +274,6 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
     			sommetsNodes[sommetVoisin.first].second = sommetMin; //on change le predecesseur
     		}
     	}
-    	heap.retirerRacine(); //la racine est maintenant solutionnée
 //    	std::cout << "la racine est " << heap.getRacine()->getSommet() << "et sa distance est " << heap.getRacine()->getDistance() << std::endl;
     }
 

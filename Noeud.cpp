@@ -7,7 +7,7 @@
 
 #include "Noeud.h"
 
-Noeud::Noeud(const int & dist, const unsigned int & sommet) : distance(distance), m_sommet(sommet),
+Noeud::Noeud(const int & dist, const unsigned int & sommet) : distance(dist), m_sommet(sommet),
 	  enfantGauche(NULL), voisin(NULL), maitre(NULL){
 }
 

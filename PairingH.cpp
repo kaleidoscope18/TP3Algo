@@ -67,10 +67,10 @@ void PairingH::retirerRacine()
 
 	Noeud * oldracine = racine;
 
-	if(racine->getEnfantGauche() == NULL) //si on retire le dernier noeud existant dans le monceau la racine devient nulle
+	if(racine->enfantGauche == NULL) //si on retire le dernier noeud existant dans le monceau la racine devient nulle
 		racine = NULL;
 	else
-		racine = fusionPassePasse(racine->getEnfantGauche()); //on doit refaire le heap pour s'assurer
+		racine = fusionPassePasse(racine->enfantGauche); //on doit refaire le heap pour s'assurer
 															 // de respecter les règles du monceau (min-heap)
 	--nbNoeuds;
 	delete oldracine;
@@ -96,7 +96,7 @@ void PairingH::diminuerDistance(Noeud *p, const int & nouvDistance)
 	if( p != racine ) { //si c'est la racine, on n'a pas d'opération supplémentaire à faire
 		if(p->voisin != NULL)
 			p->voisin->maitre = p->maitre;
-		if(p->maitre->getEnfantGauche() == p)
+		if(p->maitre->enfantGauche == p)
 			p->maitre->enfantGauche = p->voisin;
 		else
 			p->maitre->voisin = p->voisin;
@@ -134,7 +134,7 @@ void PairingH::fusionner(Noeud * & A, Noeud *B) const
 		A->voisin = B->voisin;
 		if(A->voisin != NULL)
 			A->voisin->maitre = A;
-		B->voisin = A->getEnfantGauche();
+		B->voisin = A->enfantGauche;
 		if(B->voisin != NULL)
 			B->voisin->maitre = B;
 		A->enfantGauche = B; //A reste la racine ici
@@ -190,28 +190,28 @@ Noeud * PairingH::fusionPassePasse(Noeud * voisinImmediat) const
  */
 void PairingH::parcoursDOT(Noeud * p_debut) const
 {
-	if(p_debut->getEnfantGauche() != NULL){
-		Noeud * noeudKid = p_debut->getEnfantGauche();
-		std::cout << p_debut->getDistance() << " -> " << noeudKid->getDistance() << " [color=blue]" << std::endl;
-		std::cout << noeudKid->getDistance() << " -> " << p_debut->getDistance() << " [color=black]" << std::endl;
-		if(noeudKid->getVoisin() != NULL){
-			Noeud * noeudKidVoisin = noeudKid->getVoisin();
-			std::cout << noeudKid->getDistance() << " -> " << noeudKidVoisin->getDistance() << " [color=red]"<< std::endl;
-			std::cout << "{rank = same; " << noeudKid->getDistance() << "; "<< noeudKidVoisin->getDistance() << ";}" << std::endl;
-			std::cout << noeudKidVoisin->getDistance() << " -> " << p_debut->getDistance() << " [color=black]" << std::endl;
+	if(p_debut->enfantGauche != NULL){
+		Noeud * noeudKid = p_debut->enfantGauche;
+		std::cout << p_debut->distance << " -> " << noeudKid->distance << " [color=blue]" << std::endl;
+		std::cout << noeudKid->distance << " -> " << p_debut->distance << " [color=black]" << std::endl;
+		if(noeudKid->voisin != NULL){
+			Noeud * noeudKidVoisin = noeudKid->voisin;
+			std::cout << noeudKid->distance << " -> " << noeudKidVoisin->distance << " [color=red]"<< std::endl;
+			std::cout << "{rank = same; " << noeudKid->distance << "; "<< noeudKidVoisin->distance << ";}" << std::endl;
+			std::cout << noeudKidVoisin->distance << " -> " << p_debut->distance << " [color=black]" << std::endl;
 			while(noeudKidVoisin != NULL){
-				if(noeudKidVoisin->getEnfantGauche() != NULL){
+				if(noeudKidVoisin->enfantGauche != NULL){
 					parcoursDOT(noeudKidVoisin);
 				}
-				if(noeudKidVoisin->getVoisin() != NULL){
-					std::cout << noeudKidVoisin->getDistance() << " -> " << noeudKidVoisin->getVoisin()->getDistance() << " [color=red]"<< std::endl;
-					std::cout << "{rank = same; " << noeudKidVoisin->getDistance() << "; "<< noeudKidVoisin->getVoisin()->getDistance() << ";}" << std::endl;
-					std::cout << noeudKidVoisin->getVoisin()->getDistance() << " -> " << p_debut->getDistance() << " [color=black]" << std::endl;
+				if(noeudKidVoisin->voisin != NULL){
+					std::cout << noeudKidVoisin->distance << " -> " << noeudKidVoisin->voisin->distance << " [color=red]"<< std::endl;
+					std::cout << "{rank = same; " << noeudKidVoisin->distance << "; "<< noeudKidVoisin->voisin->distance << ";}" << std::endl;
+					std::cout << noeudKidVoisin->voisin->distance << " -> " << p_debut->distance << " [color=black]" << std::endl;
 				}
-				noeudKidVoisin = noeudKidVoisin->getVoisin();
+				noeudKidVoisin = noeudKidVoisin->voisin;
 			}
 		}
-		if(noeudKid->getEnfantGauche() != NULL){
+		if(noeudKid->enfantGauche != NULL){
 			parcoursDOT(noeudKid);
 		}
 	}

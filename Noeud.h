@@ -11,14 +11,13 @@
 #include <iostream>
 class Noeud
 {
-private:
+public:
 	int distance;
 	unsigned int m_sommet;
 	Noeud *enfantGauche;
 	Noeud *voisin;
 	Noeud *maitre;
 
-public:
 	Noeud(const int & dist, const unsigned int & sommet);
 
 	Noeud * getVoisin();

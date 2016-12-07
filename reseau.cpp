@@ -1,5 +1,6 @@
 #include "reseau.h"
 #include "PairingHeap.h"
+#include <map>
 
 /*!
  * \brief constructeur par défaut d'un réseau. Crée un réseau vide.
@@ -244,58 +245,51 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
    // std::unordered_map<sommet depart, std::pair<ptr_noeud associé au sommet dans le heap, predecesseur>> sommetsNodes;
     PairingHeap heap; //constructeur par defaut
     // dans le heap chaque Noeud a la distance et le sommet associé au noeud
-    unsigned int max_poids = 10000; //std::numeric_limits<int>::max();
-    unsigned int le_sommet = 0;
+    unsigned int max_poids = 9999999;
+
     for(auto kv: m_arcs){
-    	le_sommet = (kv.first);
-    	std::cout << " " << kv.first;
-    	sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajoutNoeud(le_sommet, max_poids), 0);
-    //  sommetsNode[sommet] = std::pair<ptr vers noeud du sommet, sommet predecesseur>
-    //  heap.ajoutNoeud(ptr vers sommet, distance du sommet)
+    	unsigned int le_sommet = (kv.first);
+    	if(le_sommet == numOrigine){
+    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajoutNoeud(le_sommet, 0), 0);
+    	}
+    	else{
+    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajoutNoeud(le_sommet, max_poids), 0);
+    	}
     }
+//    std::cout << "taille du heap : " << heap.nombreNoeuds() << std::endl; //4604
 
-    unsigned int sommetOrigine = m_arcs.find(numOrigine)->first;
-    std::cout << sommetOrigine << std::endl;
-    unsigned int sommetDest = m_arcs.find(numDest)->first;
-
-    if(sommetsNodes.find(sommetOrigine) != sommetsNodes.end()){ //le sommet est censé exister
-    	std::cout << std::endl << "le sommet existe bel et bien et sa distance :" << std::endl; //TODO Retirer cette ligne
-    	std::cout << sommetsNodes[sommetOrigine].first->getDistance() << std::endl; //TODO Retirer cette ligne
-    	heap.diminuerDistanceNoeud(sommetsNodes[sommetOrigine].first, 0);
-    	std::cout << "la racine est : " << heap.getRacine()->getDistance() << std::endl;
-    }
-
-    for(int i = 0; i < nbSommets; i++){
-    	std::cout << "iteration" << i << std::endl;
+    for(int i = 0; i < nbSommets; i++){ // 2 ---nbSommets
+//    	std::cout << heap.getRacine()->getDistance() << std::endl;
     	unsigned int sommetMin = heap.getRacine()->getSommet(); //noeud dans Q tel que d(u) est minimal = racine du heap
-//    	std::cout << "le sommet associé a la racine est :" << sommetMin << std::endl;
-
-    	// liste_arcs sommetsVoisins = m_arcs[sommetMin];
-    	for(auto sommetVoisin : m_arcs[sommetMin]){
-    		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first;
+    	liste_arcs arcs = m_arcs[sommetMin];
+    	for(auto sommetVoisin : arcs){
+    		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first; //est ce que le poids est le 2param..
+//    		std::cout << "le temp => " << heap.getRacine()->getDistance() << "+" << sommetVoisin.second.first << " = " << temp << std::endl;
     		int dist = sommetsNodes[sommetVoisin.first].first->getDistance();
     		if(temp < dist){
-    			heap.diminuerDistanceNoeud(sommetsNodes[sommetVoisin.first].first, dist); //on change la distance du sommet voisin
-    			std::cout << sommetMin << "est le sommet avec distance minimale" << std::endl;
+//    			std::cout << "on a un decrease ici!" << std::endl;
+    			heap.diminuerDistanceNoeud(sommetsNodes[sommetVoisin.first].first, temp); //on change la distance du sommet voisin
     			sommetsNodes[sommetVoisin.first].second = sommetMin; //on change le predecesseur
-    			std::cout << sommetsNodes[sommetVoisin.first].second << "est supposé etre le sommet indique juste au dessus" << std::endl;
+//    			std::cout << "decrease done!" << std::endl;
     		}
     	}
+    	std::cout << i << std::endl;
     	heap.supprimerRacine(); //la racine est maintenant solutionnée
+//    	std::cout << "la racine est " << heap.getRacine()->getSommet() << "et sa distance est " << heap.getRacine()->getDistance() << std::endl;
     }
 
     chemin.clear();
-    if(sommetsNodes[sommetDest].second == 0){
+    if(sommetsNodes[numDest].second == 0){
     	std::cout << "le sommet de destination n'est pas atteignable" << std::endl;
     }
     else{
     	std::vector<unsigned int> chemin_inverse;
-    	unsigned int courant = sommetDest;
-    	while(courant != sommetOrigine){
+    	unsigned int courant = numDest;
+    	while(courant != numOrigine){
     		chemin_inverse.push_back(courant);
     		courant = sommetsNodes[courant].second;
     	}
-    	chemin.push_back(sommetOrigine);
+    	chemin.push_back(numOrigine);
     	for(auto i : chemin_inverse){
     		chemin.push_back(i);
     	}
@@ -303,6 +297,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 
     return 0; //sommetsNodes.find(ptr_sommetDest)->second.first->getDistance();
 }
+
 
 /*!
  * \brief Algorithme de BellmanFord en O(n*m)  permettant de trouver le plus court chemin entre deux noeuds du graphe

@@ -11,6 +11,7 @@
 #include <new>
 #include <limits>
 #include <algorithm>
+#include "PairingHeap.h"
 #include "station.h"
 
 #ifndef Reseau__H
@@ -70,6 +71,8 @@ private:
 
     /** Ce vector agira comme une table de hachage contenant les arcs d'un sommet avec son numero associé */
 	std::unordered_map<unsigned int, liste_arcs > m_arcs;
+
+	void parcoursProfondeur(Noeud * p_debut);
 
 };
 

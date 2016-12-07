@@ -34,8 +34,6 @@ Noeud * PairingHeap::ajoutNoeud(const unsigned int & sommet, const int & distanc
 
 	if (racineActuelle == nullptr){ //quand on a un heap vide en fait
 		this->setRacine(nouvNoeud);
-		delete racineActuelle; //on libere la memoire
-		racineActuelle = nullptr; //pas de dangling pointer
 	}
 	else{
 		fusionner(racineActuelle, nouvNoeud);
@@ -56,7 +54,7 @@ Noeud * PairingHeap::fusionner(Noeud * A, Noeud * B){
 	}
 	else if(A->getDistance() < B->getDistance()){ //B va devenir l'enfant gauche de A
 		B->setMaitre(A);
-		if(A->getEnfantGauche() != 0){
+		if(A->getEnfantGauche() != nullptr){
 			B->setVoisin(A->getEnfantGauche()); //le voisin de B est l'enfant gauche de A
 		}
 		A->setEnfantGauche(B); //la racine actuelle a un nouvel enfant gauche
@@ -68,7 +66,7 @@ Noeud * PairingHeap::fusionner(Noeud * A, Noeud * B){
 	} //sinon A >= B
 	else{ //B va devenir A et la A devient l'enfant gauche de B
 		A->setMaitre(B);
-		if(B->getEnfantGauche() != 0){
+		if(B->getEnfantGauche() != nullptr){
 			A->setVoisin(B->getEnfantGauche());
 		}
 		B->setEnfantGauche(A);
@@ -88,7 +86,7 @@ void PairingHeap::supprimerRacine(){
 	}
 
 	if(this->getRacine()->getEnfantGauche() == nullptr){ //pas d'enfant gauche donc on met une racine vide (le heap est desormais vide)
-		this->setRacine(nullptr);
+		this->setRacine(nullptr); //pas BON!??!
 	}
 	else{ //le heap n'est pas vide
 		this->setRacine(this->fusionPassePasse(this->getRacine()->getEnfantGauche()));
@@ -102,16 +100,18 @@ void PairingHeap::supprimerRacine(){
  */
 Noeud * PairingHeap::fusionPassePasse(Noeud * noeud) {
 	if(noeud == nullptr){ //pas d'autres arbres a merge avec lui, il etait le seul descendant de son maitre ou il etait vide
-		return noeud;
+		return noeud; //Y
 	}
-	else if(noeud->getVoisin() == nullptr){
+	else if(noeud->getVoisin() == nullptr){ //X
 		return noeud;
 	}
 	else{
 		Noeud *A, *B, *nouvNoeud; //on construit les pointeurs de noeuds (a 0)
-		A = noeud;
-		B = A->getVoisin(); //ici n'est pas tjr vrai
-		nouvNoeud = B->getVoisin(); // noeud->voisin->voisin; //si B n'a pas de voisin alors on va avoir un retour du noeud entre en parametre actuel
+		A = noeud; //A ne peut pas etre un nullptr car on a verifie plus haut Y
+
+		B = A->getVoisin(); //B ne peut pas etre un nullptr car on a verifie plus haut X
+
+		nouvNoeud = B->getVoisin(); //peut etre un nullptr
 
 		A->setVoisin(nullptr); //on demanche le schema, pu de maitre, pu de voisin
 		B->setVoisin(nullptr);

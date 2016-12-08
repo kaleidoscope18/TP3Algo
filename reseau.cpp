@@ -1,29 +1,29 @@
 #include "reseau.h"
 #include <map>
 #include "PairingH.h"
+#include "PairingHeap.h"
 
 /*!
  * \brief constructeur par défaut d'un réseau. Crée un réseau vide.
  *
  */
-Reseau::Reseau(): nbSommets(0), nbArcs(0) {}
-
+Reseau::Reseau() :
+		nbSommets(0), nbArcs(0) {
+}
 
 /*!
  * \brief Trouver le nombre de sommet dans le graphe en O(1)
  * \return nombre de sommet du graphe
  */
-int Reseau::nombreSommets() const
-{
-    return nbSommets;
+int Reseau::nombreSommets() const {
+	return nbSommets;
 }
 
 /*!
  * \brief Trouver le nombre d'arcs dans le graphe en O(1)
  * \return nombre d'arcs du graphe
  */
-int Reseau::nombreArcs() const
-{
+int Reseau::nombreArcs() const {
 	return nbArcs;
 }
 
@@ -31,9 +31,8 @@ int Reseau::nombreArcs() const
  * \brief Déterminer si le graphe est vide ou pas en O(1)
  * \return True ssi le graphe est vide
  */
-bool Reseau::estVide() const
-{
-    return nbSommets == 0;
+bool Reseau::estVide() const {
+	return nbSommets == 0;
 }
 
 /*!
@@ -41,9 +40,8 @@ bool Reseau::estVide() const
  * \param[in] numero: numéro du sommet à valider
  * \return true ssi le sommet existe
  */
-bool Reseau::sommetExiste(unsigned int numero) const
-{
-    return m_arcs.count(numero) != 0;
+bool Reseau::sommetExiste(unsigned int numero) const {
+	return m_arcs.count(numero) != 0;
 }
 
 /*!
@@ -53,11 +51,11 @@ bool Reseau::sommetExiste(unsigned int numero) const
  * \exception logic_error si un des deux sommet n'existe pas
  * \return true ssi l'arc existe
  */
-bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error)
-{
-    if (!(sommetExiste(numOrigine) && sommetExiste(numDest)))
-    	throw std::logic_error ("arcExiste: Un des sommets n'existe pas!");
-    return m_arcs.find(numOrigine)->second.count(numDest) != 0;
+bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const
+		throw (std::logic_error) {
+	if (!(sommetExiste(numOrigine) && sommetExiste(numDest)))
+		throw std::logic_error("arcExiste: Un des sommets n'existe pas!");
+	return m_arcs.find(numOrigine)->second.count(numDest) != 0;
 }
 
 /*!
@@ -66,11 +64,12 @@ bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const thro
  * \exception logic_error si un sommet ayant le même numéro est déjà présent
  * \post le graphe contient un sommet de plus
  */
-void Reseau::ajouterSommet(unsigned int p_numero) throw (std::logic_error)
-{
-    if (sommetExiste(p_numero)) throw std::logic_error("ajouterSommet: Un sommet avec le numero existe!") ;
-    m_arcs[p_numero] = liste_arcs();
-    nbSommets++;
+void Reseau::ajouterSommet(unsigned int p_numero) throw (std::logic_error) {
+	if (sommetExiste(p_numero))
+		throw std::logic_error(
+				"ajouterSommet: Un sommet avec le numero existe!");
+	m_arcs[p_numero] = liste_arcs();
+	nbSommets++;
 }
 
 /*!
@@ -83,12 +82,12 @@ void Reseau::ajouterSommet(unsigned int p_numero) throw (std::logic_error)
  * \exception logic_error si l'arc est déjà présent
  * \post le graphe contient un arc de plus entre l'origine et la destination
  */
-void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest, unsigned int cout, unsigned int type)
-throw(std::logic_error)
-{
-    if ( arcExiste(numOrigine, numDest) ) throw std::logic_error ("ajouterArc: arc déja existant");
-    m_arcs[numOrigine].insert({numDest, {cout, type} });
-    nbArcs++;
+void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest,
+		unsigned int cout, unsigned int type) throw (std::logic_error) {
+	if (arcExiste(numOrigine, numDest))
+		throw std::logic_error("ajouterArc: arc déja existant");
+	m_arcs[numOrigine].insert( { numDest, { cout, type } });
+	nbArcs++;
 }
 
 /*!
@@ -97,17 +96,19 @@ throw(std::logic_error)
  * \exception logic_error si aucun sommet ayant le même numéro est déjà présent
  * \post le graphe contient un sommet de moins et peut être plusieurs arcs de moins.
  */
-void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error)
-{
-    if (!sommetExiste(numero)) throw std::logic_error("enleverSommet: le sommet n'existe pas");
-    unsigned int origine;
+void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error) {
+	if (!sommetExiste(numero))
+		throw std::logic_error("enleverSommet: le sommet n'existe pas");
+	unsigned int origine;
 
-    for(auto kv: m_arcs){
-    	origine = kv.first;
-        if(arcExiste(origine, numero)){enleverArc(origine, numero);}
-    }
-    m_arcs.erase(numero);
-    nbSommets --;
+	for (auto kv : m_arcs) {
+		origine = kv.first;
+		if (arcExiste(origine, numero)) {
+			enleverArc(origine, numero);
+		}
+	}
+	m_arcs.erase(numero);
+	nbSommets--;
 }
 
 /*!
@@ -118,11 +119,12 @@ void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error)
  * \exception logic_error si l'arc n'est pas présent dans le graphe
  * \post le graphe contient un arc de moins
  */
-void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest) throw (std::logic_error)
-{
-    if (!arcExiste(numOrigine, numDest)) throw std::logic_error ("enleverArc: arc non existant");
-    m_arcs[numOrigine].erase(numDest);
-    nbArcs--;
+void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest)
+		throw (std::logic_error) {
+	if (!arcExiste(numOrigine, numDest))
+		throw std::logic_error("enleverArc: arc non existant");
+	m_arcs[numOrigine].erase(numDest);
+	nbArcs--;
 }
 
 /*!
@@ -134,10 +136,11 @@ void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest) throw (st
  * \exception logic_error si l'arc n'est pas déjà présent
  * \post le poids de l'arc a été mis à jour
  */
-void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest, unsigned int cout) throw (std::logic_error)
-{
-	if (!arcExiste(numOrigine, numDest)) throw std::logic_error ("majCoutArc: arc non existant");
-    m_arcs[numOrigine][numDest].first = cout;
+void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest,
+		unsigned int cout) throw (std::logic_error) {
+	if (!arcExiste(numOrigine, numDest))
+		throw std::logic_error("majCoutArc: arc non existant");
+	m_arcs[numOrigine][numDest].first = cout;
 }
 
 /*!
@@ -148,9 +151,11 @@ void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest, unsigned 
  * \exception logic_error si l'arc n'est pas présent dans le graphe
  * \return le cout de l'arc
  */
-int Reseau::getCoutArc(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
-	if (!arcExiste(numOrigine, numDest) ) throw std::logic_error ("getCoutArc: arc non existant");
-    return m_arcs.find(numOrigine)->second.find(numDest)->second.first;
+int Reseau::getCoutArc(unsigned int numOrigine, unsigned int numDest) const
+		throw (std::logic_error) {
+	if (!arcExiste(numOrigine, numDest))
+		throw std::logic_error("getCoutArc: arc non existant");
+	return m_arcs.find(numOrigine)->second.find(numDest)->second.first;
 }
 
 /*!
@@ -161,9 +166,11 @@ int Reseau::getCoutArc(unsigned int numOrigine, unsigned int numDest) const thro
  * \exception logic_error si l'arc n'est pas présent dans le graphe
  * \return le type de l'arc
  */
-int Reseau::getTypeArc(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
-	if (!arcExiste(numOrigine, numDest) ) throw std::logic_error ("getTypeArc: arc non existant");
-    return m_arcs.find(numOrigine)->second.find(numDest)->second.second;
+int Reseau::getTypeArc(unsigned int numOrigine, unsigned int numDest) const
+		throw (std::logic_error) {
+	if (!arcExiste(numOrigine, numDest))
+		throw std::logic_error("getTypeArc: arc non existant");
+	return m_arcs.find(numOrigine)->second.find(numDest)->second.second;
 }
 
 /*!
@@ -174,59 +181,60 @@ int Reseau::getTypeArc(unsigned int numOrigine, unsigned int numDest) const thro
  * \exception logic_error si un des sommets n'existe pas
  * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
  */
-int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
-{
-    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
-    std::unordered_map<unsigned int, int> distances;
-    std::unordered_map<unsigned int, int> predecesseurs;
-    std::unordered_set<unsigned int> Q;
-    unsigned int max_poids = std::numeric_limits<int>::max();
-    unsigned int noeud_min;
-    int temp;
+int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest,
+		std::vector<unsigned int> & chemin) throw (std::logic_error) {
+	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
+		throw std::logic_error("dijkstra: Un des sommets n'existe pas!");
+	std::unordered_map<unsigned int, int> distances;
+	std::unordered_map<unsigned int, int> predecesseurs;
+	std::unordered_set<unsigned int> Q;
+	unsigned int max_poids = std::numeric_limits<int>::max();
+	unsigned int noeud_min;
+	int temp;
 
-    for(auto kv: m_arcs){
-    	distances[kv.first] = max_poids;
-    	predecesseurs[kv.first] = -1;
-    	Q.insert(kv.first);
-    }
+	for (auto kv : m_arcs) {
+		distances[kv.first] = max_poids;
+		predecesseurs[kv.first] = -1;
+		Q.insert(kv.first);
+	}
 
-    distances[numOrigine] = 0;
-    for(int i = 0; i < nbSommets; i++){
-    	noeud_min = *(Q.begin());
-    	for(auto noeud: Q){
-    		if(distances[noeud] < distances[noeud_min]){
-    			noeud_min = noeud;
-    		}
-    	}
-    	Q.erase(noeud_min);
-    	if(noeud_min == numDest){
-    		break;
-    	}
+	distances[numOrigine] = 0;
+	for (int i = 0; i < nbSommets; i++) {
+		noeud_min = *(Q.begin());
+		for (auto noeud : Q) {
+			if (distances[noeud] < distances[noeud_min]) {
+				noeud_min = noeud;
+			}
+		}
+		Q.erase(noeud_min);
+		if (noeud_min == numDest) {
+			break;
+		}
 
-    	for(auto voisin: m_arcs[noeud_min]){
-    		if(Q.count(voisin.first) != 0){
-    			temp = voisin.second.first + distances[noeud_min];
-    			if(temp < distances[voisin.first]) {
-    				distances[voisin.first] = temp;
-    				predecesseurs[voisin.first] = noeud_min;
-    			}
-    		}
-    	}
-    }
+		for (auto voisin : m_arcs[noeud_min]) {
+			if (Q.count(voisin.first) != 0) {
+				temp = voisin.second.first + distances[noeud_min];
+				if (temp < distances[voisin.first]) {
+					distances[voisin.first] = temp;
+					predecesseurs[voisin.first] = noeud_min;
+				}
+			}
+		}
+	}
 
-    chemin.clear();
-    if(predecesseurs[numDest] != -1){
-    	std::vector<unsigned int> chemin_inverse;
+	chemin.clear();
+	if (predecesseurs[numDest] != -1) {
+		std::vector<unsigned int> chemin_inverse;
 		int courant = numDest;
-		while(courant!=-1){
+		while (courant != -1) {
 			chemin_inverse.push_back(courant);
 			courant = predecesseurs[courant];
 		}
-		for(int i=chemin_inverse.size() -1; i >= 0; i--){
+		for (int i = chemin_inverse.size() - 1; i >= 0; i--) {
 			chemin.push_back(chemin_inverse[i]);
 		}
-    }
-    return distances[numDest];
+	}
+	return distances[numDest];
 }
 
 /*!
@@ -237,70 +245,60 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
  * \exception logic_error si un des sommets n'existe pas
  * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
  */
-int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
-{
-    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
-//    for(auto kv: m_arcs){
-//    	for(auto kw: kv.second){
-//    		std::cout << kv.first << "->" << kw.first << " poids : " << kw.second.first << std::endl;
-//    	}
-//    }
-    std::unordered_map<unsigned int, std::pair<Noeud *, unsigned int>> sommetsNodes;
-   // <sommet depart, <ptr_noeud associé au sommet dans le heap, predecesseur>>
+int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
+		unsigned int numDest, std::vector<unsigned int> & chemin)
+				throw (std::logic_error) {
+	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
+		throw std::logic_error("dijkstra: Un des sommets n'existe pas!");
 
-    PairingH heap;
-    // dans le heap chaque Noeud a la distance et le sommet associé au noeud
+	PairingHeap heap { };
+	// dans le heap chaque Noeud a la distance et le sommet associé au noeud
+	std::unordered_map<unsigned int, std::pair<PairNode *, unsigned int>> sommets;
+	// <sommet depart, <ptr_noeud associé au sommet dans le heap, predecesseur>>
 
-    //on ajoute la racine en premier (noeud initial)
-    sommetsNodes[numOrigine] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(1, numOrigine), 0);
+	for (auto kv : m_arcs) { //on construit le heap
+		sommets[kv.first] = std::pair<PairNode *, unsigned int>(
+				heap.insert(9999, kv.first), 9999);
+	}
+	heap.decreaseKey(sommets[numOrigine].first, 0);
 
-    for(auto kv: m_arcs){ //on construit le heap
-    	unsigned int le_sommet = (kv.first);
-//    	std::cout << "ajout sommet " << le_sommet << std::endl;
-    	if(le_sommet != numOrigine){
-    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(9999, le_sommet), 0);
-    	}
-//    	std::cout << "racine " << heap.racine->sommet << " distance " << heap.racine->distance << std::endl;
-    }
+	int max_iter = m_arcs.size(); // = 4603 TODO TESTER JUSQUA 4604 fois
+	for (int i = 0; i < max_iter; ++i) { //on peut juste faire appel aux fonctions du heap seulement quand le heap est pas vide
+										 //(la 4603e fois qu'on delete qqch ca chie après)
 
-    for(int i = 0; i < nbSommets; ++i){
+		PairNode * u_etoile = heap.findRoot(); //u* est noeud dans Q tel que d(u) est minimal = racine du heap
 
-    	unsigned int u_etoile = heap.racine->m_sommet; //u* est noeud dans Q tel que d(u) est minimal = racine du heap
-    	int dist_u_etoile = heap.racine->distance;
+		if(u_etoile->m_sommet == numDest){
+			i = max_iter; //on arrete la boucle for quand on arrive à destination
+		}
 
-    	std::cout << "la racine est : " << u_etoile << " et sa distance est : " << dist_u_etoile << std::endl;
-
-    	heap.retirerRacine();
-
-    	std::cout << heap.nombreNoeuds() << std::endl;
-
-    	for(auto u : m_arcs[u_etoile]){ //on itère sur tous les u adj a u*
-
-			int temp { dist_u_etoile + u.second.first }; // temp = d(u*) + w(u*, u)
-    		std::cout << "temp = d(u*) + w(u*, u) <=> " << temp << std::endl;
-
-    		int dist_u = sommetsNodes[u.first].first->distance; //d(u)
-
-    		if(temp < dist_u){
-    			Noeud * u_noeud =  sommetsNodes[u.first].first;
-    			heap.diminuerDistance(u_noeud, temp); //d(u) = temp
-    			sommetsNodes[u.first].second = u_etoile; //p(u) = u*
-    			std::cout << "sommet " << u.first << " a passe de " << dist_u << " a " << u_noeud->distance << std::endl;
-    			std::cout << "la racine est devenue : " << heap.racine->m_sommet << " avec une distance de " << heap.racine->distance << std::endl;
-    		}
-    	}
-    }
+		unsigned int dist_u_etoile { u_etoile->element };
+		unsigned int u_etoile_sommet = u_etoile->m_sommet;
+		for (auto u : m_arcs[u_etoile->m_sommet]) { //on itère sur tous les u adj a u*
+			if(sommets[u.first].first != nullptr){ //on ne veut que les u non solutionnés
+				unsigned int dist_temp { dist_u_etoile + u.second.first }; // temp = d(u*) + w(u*, u)
+				unsigned int dist_u { sommets[u.first].first->element }; //d(u)
+				if (dist_temp < dist_u) {
+					heap.decreaseKey(sommets[u.first].first, dist_temp); //d(u) = temp
+					sommets[u.first].second = sommets[u_etoile_sommet].first->m_sommet; //p(u) = u*
+				}
+			}
+		}
+		sommets[u_etoile->m_sommet].first = nullptr; //noeud solutionné = il ne doit plus exister
+		heap.deleteMin();
+	}
 
     chemin.clear();
-    if(sommetsNodes[numDest].second == 0){
+    if(sommets[numDest].second == 0){
     	std::cout << "le sommet de destination n'est pas atteignable" << std::endl;
     }
     else{
+    	std::cout << "le sommet de destination est atteignable" << std::endl;
     	std::vector<unsigned int> chemin_inverse;
     	unsigned int courant = numDest;
     	while(courant != numOrigine){
     		chemin_inverse.push_back(courant);
-    		courant = sommetsNodes[courant].second;
+    		courant = sommets[courant].second;
     	}
     	chemin.push_back(numOrigine);
     	for(auto i : chemin_inverse){
@@ -308,9 +306,8 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
     	}
     }
 
-    return 0; //sommetsNodes.find(ptr_sommetDest)->second.first->distance;
+	return 0; //TODO A CHANGER POUR LA LONGUEUR DU CHEMIN !
 }
-
 
 /*!
  * \brief Algorithme de BellmanFord en O(n*m)  permettant de trouver le plus court chemin entre deux noeuds du graphe
@@ -320,48 +317,49 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
  * \exception logic_error si un des sommets n'existe pas
  * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
  */
-int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
-{
-    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("bellmanFord: Un des sommets n'existe pas!");
-    unsigned int noeud_courant;
-    int temp;
-    std::unordered_map<unsigned int, int> distances;
-    std::unordered_map<unsigned int, int> predecesseurs;
-    int max_poids = std::numeric_limits<int>::max();
-    for(auto kv: m_arcs){
-    	distances[kv.first] = max_poids;
-    	predecesseurs[kv.first] = -1;
-    }
-    bool estInstable = true;
+int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
+		std::vector<unsigned int> & chemin) throw (std::logic_error) {
+	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
+		throw std::logic_error("bellmanFord: Un des sommets n'existe pas!");
+	unsigned int noeud_courant;
+	int temp;
+	std::unordered_map<unsigned int, int> distances;
+	std::unordered_map<unsigned int, int> predecesseurs;
+	int max_poids = std::numeric_limits<int>::max();
+	for (auto kv : m_arcs) {
+		distances[kv.first] = max_poids;
+		predecesseurs[kv.first] = -1;
+	}
+	bool estInstable = true;
 
-    distances[numOrigine] = 0;
-    for(int i = 1; (i <  nbSommets) && estInstable ; i++){
-    	estInstable = false;
-    	for(auto kv: m_arcs){
-    		noeud_courant = kv.first;
-    		if(distances[noeud_courant] < max_poids){
-				for(auto voisin: kv.second){
+	distances[numOrigine] = 0;
+	for (int i = 1; (i < nbSommets) && estInstable; i++) {
+		estInstable = false;
+		for (auto kv : m_arcs) {
+			noeud_courant = kv.first;
+			if (distances[noeud_courant] < max_poids) {
+				for (auto voisin : kv.second) {
 					temp = voisin.second.first + distances[noeud_courant];
-					if(temp < distances[voisin.first] && temp >= 0) {
+					if (temp < distances[voisin.first] && temp >= 0) {
 						distances[voisin.first] = temp;
 						predecesseurs[voisin.first] = noeud_courant;
 						estInstable = true;
 					}
 				}
-    		}
-    	}
-    }
-    chemin.clear();
-    if(predecesseurs[numDest] != -1){
-    	std::vector<unsigned int> chemin_inverse;
+			}
+		}
+	}
+	chemin.clear();
+	if (predecesseurs[numDest] != -1) {
+		std::vector<unsigned int> chemin_inverse;
 		int courant = numDest;
-		while(courant!=-1){
+		while (courant != -1) {
 			chemin_inverse.push_back(courant);
 			courant = predecesseurs[courant];
 		}
-		for(int i=chemin_inverse.size() -1; i >= 0; i--){
+		for (int i = chemin_inverse.size() - 1; i >= 0; i--) {
 			chemin.push_back(chemin_inverse[i]);
 		}
-    }
-    return distances[numDest];
+	}
+	return distances[numDest];
 }

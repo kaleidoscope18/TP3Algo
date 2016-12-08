@@ -1,10 +1,56 @@
-Chargement des données terminé en 14.1939 secondes
+Chargement des données terminé en 14.867 secondes
 Initialisation du réseau ....
-Chargement des données terminé en 6.73581 secondes
+Chargement des données terminé en 6.77142 secondes
 
 le sommet de destination est atteignable
-la fonction s'est terminé en 19282microsecondes
+la longueur du chemin est : 1420
+la fonction s'est terminé en 18837microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-Temps moyen de dijsktra 19417
+le sommet de destination est atteignable
+la longueur du chemin est : 891
+la fonction s'est terminé en 13744microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 1071
+la fonction s'est terminé en 15726microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 919
+la fonction s'est terminé en 15250microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 986
+la fonction s'est terminé en 15006microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 3228
+la fonction s'est terminé en 15044microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 3219
+la fonction s'est terminé en 22972microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 1972
+la fonction s'est terminé en 25639microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 2076
+la fonction s'est terminé en 20847microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+le sommet de destination est atteignable
+la longueur du chemin est : 150
+la fonction s'est terminé en 17452microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+Temps moyen de dijsktra 18182
 

@@ -250,7 +250,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
 				throw (std::logic_error) {
 	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
 		throw std::logic_error("dijkstra: Un des sommets n'existe pas!");
-
+	unsigned int longueur_chemin = 0;
 	PairingHeap heap { };
 	// dans le heap chaque Noeud a la distance et le sommet associé au noeud
 	std::unordered_map<unsigned int, std::pair<PairNode *, unsigned int>> sommets;
@@ -268,9 +268,6 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
 
 		PairNode * u_etoile = heap.findRoot(); //u* est noeud dans Q tel que d(u) est minimal = racine du heap
 
-		if(u_etoile->m_sommet == numDest){
-			i = max_iter; //on arrete la boucle for quand on arrive à destination
-		}
 
 		unsigned int dist_u_etoile { u_etoile->element };
 		unsigned int u_etoile_sommet = u_etoile->m_sommet;
@@ -284,6 +281,10 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
 				}
 			}
 		}
+		if(u_etoile->m_sommet == numDest){
+			i = max_iter; //on arrete la boucle for quand on arrive à destination
+			longueur_chemin = u_etoile->element;
+		}
 		sommets[u_etoile->m_sommet].first = nullptr; //noeud solutionné = il ne doit plus exister
 		heap.deleteMin();
 	}
@@ -294,6 +295,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
     }
     else{
     	std::cout << "le sommet de destination est atteignable" << std::endl;
+    	std::cout << "la longueur du chemin est : " << longueur_chemin << std::endl;
     	std::vector<unsigned int> chemin_inverse;
     	unsigned int courant = numDest;
     	while(courant != numOrigine){
@@ -306,7 +308,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
     	}
     }
 
-	return 0; //TODO A CHANGER POUR LA LONGUEUR DU CHEMIN !
+	return longueur_chemin;
 }
 
 /*!

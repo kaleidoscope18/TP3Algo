@@ -1,14 +1,14 @@
 #include "reseau.h"
 #include <map>
+
 #include "PairingH.h"
-#include "PairingHeap.h"
 
 /*!
  * \brief constructeur par défaut d'un réseau. Crée un réseau vide.
  *
  */
 Reseau::Reseau() :
-		nbSommets(0), nbArcs(0) {
+		nbSommets { 0 }, nbArcs { 0 } {
 }
 
 /*!
@@ -99,7 +99,7 @@ void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest,
 void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error) {
 	if (!sommetExiste(numero))
 		throw std::logic_error("enleverSommet: le sommet n'existe pas");
-	unsigned int origine;
+	unsigned int origine { };
 
 	for (auto kv : m_arcs) {
 		origine = kv.first;
@@ -189,8 +189,8 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest,
 	std::unordered_map<unsigned int, int> predecesseurs;
 	std::unordered_set<unsigned int> Q;
 	unsigned int max_poids = std::numeric_limits<int>::max();
-	unsigned int noeud_min;
-	int temp;
+	unsigned int noeud_min { };
+	int temp { };
 
 	for (auto kv : m_arcs) {
 		distances[kv.first] = max_poids;
@@ -225,7 +225,7 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest,
 	chemin.clear();
 	if (predecesseurs[numDest] != -1) {
 		std::vector<unsigned int> chemin_inverse;
-		int courant = numDest;
+		int courant { (int) numDest };
 		while (courant != -1) {
 			chemin_inverse.push_back(courant);
 			courant = predecesseurs[courant];
@@ -250,43 +250,43 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
 				throw (std::logic_error) {
 	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
 		throw std::logic_error("dijkstra: Un des sommets n'existe pas!");
-	unsigned int longueur_chemin = 0;
-	PairingHeap heap { };
+	unsigned int longueur_chemin { 0 };
+	PairingH heap { };
 	// dans le heap chaque Noeud a la distance et le sommet associé au noeud
-	std::unordered_map<unsigned int, std::pair<PairNode *, unsigned int>> sommets;
+	std::unordered_map<unsigned int, std::pair<Noeud *, unsigned int>> sommets;
 	// <sommet depart, <ptr_noeud associé au sommet dans le heap, predecesseur>>
 
 	for (auto kv : m_arcs) { //on construit le heap
-		sommets[kv.first] = std::pair<PairNode *, unsigned int>(
-				heap.insert(9999, kv.first), 9999);
+		sommets[kv.first] = std::pair<Noeud *, unsigned int>(
+				heap.ajouterNoeud(9999, kv.first), 9999);
 	}
-	heap.decreaseKey(sommets[numOrigine].first, 0);
+	heap.diminuerDistance(sommets[numOrigine].first, 0);
 
-	int max_iter = m_arcs.size(); // = 4603 TODO TESTER JUSQUA 4604 fois
+	int max_iter = m_arcs.size();
 	for (int i = 0; i < max_iter; ++i) { //on peut juste faire appel aux fonctions du heap seulement quand le heap est pas vide
 										 //(la 4603e fois qu'on delete qqch ca chie après)
 
-		PairNode * u_etoile = heap.findRoot(); //u* est noeud dans Q tel que d(u) est minimal = racine du heap
+		Noeud * u_etoile = heap.getRacine(); //u* est noeud dans Q tel que d(u) est minimal = racine du heap
 
 
-		unsigned int dist_u_etoile { u_etoile->element };
-		unsigned int u_etoile_sommet = u_etoile->m_sommet;
+		unsigned int dist_u_etoile { u_etoile->distance };
+		unsigned int u_etoile_sommet { u_etoile->m_sommet };
 		for (auto u : m_arcs[u_etoile->m_sommet]) { //on itère sur tous les u adj a u*
 			if(sommets[u.first].first != nullptr){ //on ne veut que les u non solutionnés
 				unsigned int dist_temp { dist_u_etoile + u.second.first }; // temp = d(u*) + w(u*, u)
-				unsigned int dist_u { sommets[u.first].first->element }; //d(u)
+				unsigned int dist_u { sommets[u.first].first->distance }; //d(u)
 				if (dist_temp < dist_u) {
-					heap.decreaseKey(sommets[u.first].first, dist_temp); //d(u) = temp
+					heap.diminuerDistance(sommets[u.first].first, dist_temp); //d(u) = temp
 					sommets[u.first].second = sommets[u_etoile_sommet].first->m_sommet; //p(u) = u*
 				}
 			}
 		}
 		if(u_etoile->m_sommet == numDest){
 			i = max_iter; //on arrete la boucle for quand on arrive à destination
-			longueur_chemin = u_etoile->element;
+			longueur_chemin = u_etoile->distance;
 		}
 		sommets[u_etoile->m_sommet].first = nullptr; //noeud solutionné = il ne doit plus exister
-		heap.deleteMin();
+		heap.supprimerRacine();
 	}
 
     chemin.clear();
@@ -294,10 +294,8 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
     	std::cout << "le sommet de destination n'est pas atteignable" << std::endl;
     }
     else{
-    	std::cout << "le sommet de destination est atteignable" << std::endl;
-    	std::cout << "la longueur du chemin est : " << longueur_chemin << std::endl;
     	std::vector<unsigned int> chemin_inverse;
-    	unsigned int courant = numDest;
+		unsigned int courant { numDest };
     	while(courant != numOrigine){
     		chemin_inverse.push_back(courant);
     		courant = sommets[courant].second;
@@ -323,8 +321,8 @@ int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
 		std::vector<unsigned int> & chemin) throw (std::logic_error) {
 	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
 		throw std::logic_error("bellmanFord: Un des sommets n'existe pas!");
-	unsigned int noeud_courant;
-	int temp;
+	unsigned int noeud_courant { };
+	int temp { };
 	std::unordered_map<unsigned int, int> distances;
 	std::unordered_map<unsigned int, int> predecesseurs;
 	int max_poids = std::numeric_limits<int>::max();
@@ -332,7 +330,7 @@ int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
 		distances[kv.first] = max_poids;
 		predecesseurs[kv.first] = -1;
 	}
-	bool estInstable = true;
+	bool estInstable { true };
 
 	distances[numOrigine] = 0;
 	for (int i = 1; (i < nbSommets) && estInstable; i++) {
@@ -354,7 +352,7 @@ int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
 	chemin.clear();
 	if (predecesseurs[numDest] != -1) {
 		std::vector<unsigned int> chemin_inverse;
-		int courant = numDest;
+		int courant { (int) numDest };
 		while (courant != -1) {
 			chemin_inverse.push_back(courant);
 			courant = predecesseurs[courant];

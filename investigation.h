@@ -19,9 +19,9 @@
 #include "sys/time.h"
 #include <iostream>
 
-const double vitesse_de_marche = 5.0; /*! vitesse moyenne de marche d'un humain selon wikipedia */
+const double vitesse_de_marche { 5.0 }; /*! vitesse moyenne de marche d'un humain selon wikipedia */
 
-const double distance_max_transfert = 0.2; // Cette distance est relativement courte et prend juste 2.5 min à parcourir.
+const double distance_max_transfert { 0.2 }; // Cette distance est relativement courte et prend juste 2.5 min à parcourir.
 
 enum class MoyenDeplacement {BUS=0, PIEDS};
 
@@ -38,8 +38,11 @@ public:
 	bool station_existe(int station_id);
 	std::vector< unsigned int > plus_court_chemin_dijsktra(unsigned int num_station_depart, unsigned int num_station_dest);
 	std::vector< unsigned int > plus_court_chemin_bellman(unsigned int num_station_depart, unsigned int num_station_dest);
+	std::vector< unsigned int > plus_court_chemin_dijsktra_modifie(unsigned int num_station_depart, unsigned int num_station_dest);
+
 	double tester_n_paires_dijsktra(unsigned int nb_paires, unsigned int seed=42);
 	double tester_n_paires_bellman(unsigned int nb_paires, unsigned int seed=42);
+	double tester_n_paires_dijkstra_modifie(unsigned int nb_paires, unsigned int seed=42);
 
 private:
 	std::unordered_map<std::string, Ligne> lignes;

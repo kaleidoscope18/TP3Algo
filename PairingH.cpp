@@ -1,86 +1,74 @@
 /*
- * PairingH.cpp
+ * PairingHeap.h
  *
- *  Created on: 2016-12-07
- *      Author: Nadia
+ *  Created on: 2016-12-08
+ *  Author : Nadia
+ *    Source #1 : https://github.com/saadtaame/pairing-heap/blob/master/pairing_heap.cc
+ *    Source #2 : https://users.cs.fiu.edu/~weiss/ (Mark Allen Weiss)
  */
+#include "PairingH.h"
 
 #include <stdexcept>
 #include <vector>
-#include "PairingH.h"
-
-int PairingH::nbNoeuds { 0 };
-
 /**
  * Constructeur par défaut
  */
-PairingH::PairingH()
-{
+PairingH::PairingH() {
 	racine = nullptr;
-}
-/*
- * Constructeur de copie
- */
-PairingH::PairingH(const PairingH & nouvPH)
-{
-	racine = nullptr;
-	*this = nouvPH;
-}
-/**
- * Retourne le nombre de noeuds dans le monceau
- */
-int PairingH::nombreNoeuds() const
-{
-	return nbNoeuds;
 }
 /**
  * ajouter un noeud dans le heap tout en conservant les propriétés du heap
  * Return un pointeur vers l'objet Noeud créé
  */
-Noeud * PairingH::ajouterNoeud(const int & dist, const unsigned int & sommet)
-{
-	Noeud *newNoeud = new Noeud(dist, sommet);
+Noeud * PairingH::ajouterNoeud(const unsigned int & x,
+		const unsigned int & sommet) {
+	Noeud *newNode = new Noeud { x, sommet };
 
-	if( racine == nullptr )
-		racine = newNoeud; //si on n'avait pas de racine, rien de plus a faire
+	if (racine == nullptr)
+		racine = newNode;
 	else
-		fusionner(racine, newNoeud); //sinon, on doit s'assurer que le noeud se place au bon endroit et que le heap
-									// respecte les règles du heap-min
-	++nbNoeuds;
-	return newNoeud;
+		fusionner(racine, newNode);
+	return newNode;
+}
+
+/**
+ * retourne la distance de la racine du monceau (qui a la distance minimale)
+ */
+const unsigned int & PairingH::trouverDistanceMin() const {
+	if (estVide())
+		throw std::logic_error("heap vide");
+	return racine->distance;
 }
 /**
  * retourne la racine du monceau (qui a la distance minimale)
  */
-Noeud * PairingH::getRacine() const{
+Noeud * PairingH::getRacine() const {
+	if (estVide())
+		throw std::logic_error("heap vide");
 	return racine;
 }
 /**
  * Retire la racine (item ayant la distance minimale) du monceau
  * Le heap ne doit pas etre vide
  */
+void PairingH::supprimerRacine() {
+	if (estVide())
+		throw std::logic_error("heap vide");
 
-void PairingH::retirerRacine()
-{
-	if( estVide() )
-		throw std::logic_error("logic error heap is empty");
+	Noeud *oldRoot = racine;
 
-	Noeud * oldracine = racine;
-
-	if(racine->enfantGauche == nullptr) //si on retire le dernier noeud existant dans le monceau la racine devient nulle
+	if (racine->enfantGauche == nullptr)
 		racine = nullptr;
 	else
-		racine = fusionPassePasse(racine->enfantGauche); //on doit refaire le heap pour s'assurer
-															 // de respecter les règles du monceau (min-heap)
-	--nbNoeuds;
-	delete oldracine;
+		racine = fusionPassePasse(racine->enfantGauche);
+
+	delete oldRoot;
 }
 /**
  * retourne vrai si le monceau est vide (racine == nullptr)
  * retourne faux s'il y a une racine
  */
-bool PairingH::estVide() const
-{
+bool PairingH::estVide() const {
 	return racine == nullptr;
 }
 /*
@@ -88,111 +76,92 @@ bool PairingH::estVide() const
  * La nouvelle valeur doit etre inférieure à la valeur deja existante pour ce noeud
  * Sinon il ne se passera rien
  */
-void PairingH::diminuerDistance(Noeud *p, const int & nouvDistance)
-{
-	if(p->distance < nouvDistance)
-		return;    // on doit diminuer et non augmenter la distance
-	p->distance = nouvDistance; //on diminue la valeur
-	if( p != racine ) { //si c'est la racine, on n'a pas d'opération supplémentaire à faire
-		if(p->voisin != nullptr)
+void PairingH::diminuerDistance(Noeud *p, const unsigned int & newVal) {
+	if (p->distance < newVal)
+		return;    // newVal cannot be bigger
+	p->distance = newVal;
+	if (p != racine) {
+		if (p->voisin != nullptr)
 			p->voisin->maitre = p->maitre;
-		if(p->maitre != nullptr)
-		{
-			if(p->maitre->enfantGauche == p){
-				p->maitre->enfantGauche = p->voisin;
-			}
-			else{
-				p->maitre->voisin = p->voisin;
-			}
-		}
+		if (p->maitre->enfantGauche == p)
+			p->maitre->enfantGauche = p->voisin;
+		else
+			p->maitre->voisin = p->voisin;
+
 		p->voisin = nullptr;
 		fusionner(racine, p);
 	}
 }
 
 /**
- * fusion de deux noeuds
- * doit respecter les regles du min-heap (racine doit etre la valeur minimale)
- * le noeud A ne peut pas etre nullptr et ne doit pas avoir de voisin
- * le noeud A est donc normalement la racine du premier monceau
- * le noeud B est donc la racine du deuxieme monceau
- * le noeud A est la racine du nouvel arbre
+ * Operation pour maintenir l'ordre du monceau et respecter les règles de base
+ * Le noeud A ne doit pas être un pointeur nullptr
  */
-
-void PairingH::fusionner(Noeud * & A, Noeud *B) const
-{
-	if(B == nullptr)
+void PairingH::fusionner(Noeud * & A, Noeud * B) const {
+	if (B == nullptr)
 		return;
 
-	if( B->distance < A->distance ) {//A devient l'enfant gauche de B
+	if (B->distance < A->distance) {//A devient l'enfant gauche de B
 		B->maitre = A->maitre; //A devrait normalement pas avoir de maitre (nullptr)
 		A->maitre = B;
 		A->voisin = B->enfantGauche;
-		if(A->voisin != nullptr)
+		if (A->voisin != nullptr)
 			A->voisin->maitre = A;
 		B->enfantGauche = A;
 		A = B; //B est devenu la racine, donc A prend la place de l'enfant gauche de B
-	}
-	else { //B va devenir l'enfant gauche de A
+	} else { //B va devenir l'enfant gauche de A
 		B->maitre = A;
 		A->voisin = B->voisin;
-		if(A->voisin != nullptr)
+		if (A->voisin != nullptr)
 			A->voisin->maitre = A;
 		B->voisin = A->enfantGauche;
-		if(B->voisin != nullptr)
+		if (B->voisin != nullptr)
 			B->voisin->maitre = B;
 		A->enfantGauche = B; //A reste la racine ici
 	}
 }
 
-/**
- * Implémentation du two-pass merging/pairing
+/*
+ * implementation de two-pass merge / pairing
+ * param noeud : est l'enfant gauche de la racine qui vient d'etre extraite
  */
-Noeud * PairingH::fusionPassePasse(Noeud * voisinImmediat) const
-{
-    {
-    	if(voisinImmediat == nullptr){ //on ne doit pas avoir de racine nulle..
-    		return nullptr;
-    	}
-    	//pas de fusionPassePasse si on a pas de voisin
-        if(voisinImmediat->voisin == nullptr)
-            return voisinImmediat;
+Noeud * PairingH::fusionPassePasse(Noeud * noeud) const {
+	if (noeud->voisin == nullptr) //on ne doit pas avoir de racine nulle..
+	{
+		return noeud;
+	}
 
-            // On pourra ensuite mettre les sous-heaps dans le vecteur pour les refusionner plus tard
-        static std::vector<Noeud *> sousMonceaux(5);
-        int nombreVoisins = 0;
-        for( ; voisinImmediat != nullptr; nombreVoisins++) //pour chaque voisin qui existe
-        {
-            if(nombreVoisins == sousMonceaux.size()) //reallocation du vecteur, optimal pour pas avoir de reallocation a chaque fois
-                sousMonceaux.resize(nombreVoisins*2);
-            sousMonceaux[nombreVoisins] = voisinImmediat;
-            if(voisinImmediat->maitre != nullptr)
-            {
-            	voisinImmediat->maitre->voisin = nullptr;  // après avoir stocké le voisin, on brise les liens
-            }
-            voisinImmediat = voisinImmediat->voisin;
-        }
-        if(nombreVoisins == sousMonceaux.size()) //reallocation du vecteur
-            sousMonceaux.resize(nombreVoisins+1);
-        sousMonceaux[nombreVoisins] = nullptr;
+	// On pourra ensuite mettre les sous-heaps dans le vecteur pour les refusionner plus tard
+	static std::vector<Noeud *> sousMonceaux(5);
+	int nbVoisins { 0 };
+	for (; noeud != nullptr; nbVoisins++) { //pour chaque voisin qui existe
+		if (nbVoisins == (int)sousMonceaux.size()) //reallocation du vecteur, optimal pour pas avoir de reallocation a chaque fois
+			sousMonceaux.resize(nbVoisins * 2);
+		sousMonceaux[nbVoisins] = noeud;
+		noeud->maitre->voisin = nullptr;  // après avoir stocké le voisin, on brise les liens
+		noeud = noeud->voisin;
+	}
+	if (nbVoisins == (int)sousMonceaux.size()) //reallocation du vecteur
+		sousMonceaux.resize(nbVoisins + 1);
+	sousMonceaux[nbVoisins] = nullptr;
 
-            // on fait la premiere passe en combinant des paires de sous heap, de gauche a droite
-        int i = 0;
-        for( ; i+1 < nombreVoisins; i += 2)
-            fusionner(sousMonceaux[i], sousMonceaux[i+1]);
+	int i { 0 }; // on fait la premiere passe en combinant des paires de sous heap, de gauche a droite
+	for (; i + 1 < nbVoisins; i += 2)
+	{
+		fusionner(sousMonceaux[i], sousMonceaux[i + 1]);
+	}
 
-        int j = i - 2;
+	int j { i - 2 };
+	if (j == nbVoisins - 3)
+		fusionner(sousMonceaux[j], sousMonceaux[j + 2]);
 
-        if(j == nombreVoisins - 3)
-            fusionner(sousMonceaux[j], sousMonceaux[j + 2]);
-
-            // on fait la seconde passe cette fois-ci en passant de droite a gauche
-        for( ; j >= 2; j -= 2)
-            fusionner(sousMonceaux[j-2], sousMonceaux[j]);
-        return sousMonceaux[0];
-    }
+	// on fait la seconde passe cette fois-ci en passant de droite a gauche
+	for (; j >= 2; j -= 2)
+		fusionner(sousMonceaux[j - 2], sousMonceaux[j]);
+	return sousMonceaux[0];
 }
 /*
+ * Génère le texte dans la console pour avoir un graphe en langage DOT
  * On peut redessiner avec https://stamm-wilbrandt.de/GraphvizFiddle/ (visualisation du heap)
  */
 void PairingH::parcoursDOT(Noeud * p_debut) const

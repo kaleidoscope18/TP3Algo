@@ -7,10 +7,10 @@
 
 //détermine le temps d'exécution (en microseconde) entre tv2 et tv2
 long tempsExecution(const timeval& tv1, const timeval& tv2) {
-	const long unMillion = 1000000;
-	long dt_usec = tv2.tv_usec - tv1.tv_usec;
-	long dt_sec = tv2.tv_sec - tv1.tv_sec;
-	long dtms = unMillion * dt_sec + dt_usec;
+	const long unMillion { 1000000 };
+	long dt_usec { tv2.tv_usec - tv1.tv_usec };
+	long dt_sec { tv2.tv_sec - tv1.tv_sec };
+	long dtms { unMillion * dt_sec + dt_usec };
 	return dtms;
 }
 
@@ -27,7 +27,7 @@ GestionnaireInvestigation::GestionnaireInvestigation(std::string chemin_dossier)
 	std::unordered_multimap<std::string, Voyage*> voyages_par_service_id;
 	std::unordered_multimap<std::string, Arret> map_arrets;
 	std::vector<std::vector<std::string> > temp;
-	unsigned int id;
+	unsigned int id { };
 
 	clock_t begin = clock();
 	lireFichier(chemin_dossier+"/routes.txt", temp, ',', true);
@@ -106,8 +106,28 @@ GestionnaireInvestigation::GestionnaireInvestigation(std::string chemin_dossier)
 bool GestionnaireInvestigation::station_existe(int station_id){
 	return (stations.find(station_id) != stations.end());
 }
+/*!
+ * \brief Trouver le plus court chemin en autobus pour aller deux stations A et B
+ * Pour ce faire, il faut initialiser le réseau, puis faire appel à ses routines de plus courts chemin
+ * \param num_station_depart: numéro de la station de départ
+ * \param num_station_dest: numéro de la station de départ
+ * \return Un vecteur contenant les stations du chemin trouvé, le vecteur est vide si aucun chemin n'est disponible
+ */
+std::vector<unsigned int> GestionnaireInvestigation::plus_court_chemin_dijsktra_modifie(unsigned int num_station_depart, unsigned int num_station_dest)
+{
+	timeval tv1 { }, tv2 { };
 
+	if (gettimeofday(&tv1, 0) != 0)
+			throw std::logic_error("gettimeofday() a échoué");
 
+	std::vector<unsigned int> chemin;
+	m_reseau.meilleurPlusCourtChemin(num_station_depart, num_station_dest, chemin);
+
+	if (gettimeofday(&tv2, 0) != 0)
+			throw std::logic_error("gettimeofday() a échoué");
+
+	std::cout << "la fonction s'est terminé en " << tempsExecution(tv1, tv2) << "microsecondes" << std::endl;
+	return chemin;}
 /*!
  * \brief Trouver le plus court chemin en autobus pour aller deux stations A et B
  * Pour ce faire, il faut initialiser le réseau, puis faire appel à ses routines de plus courts chemin
@@ -117,13 +137,13 @@ bool GestionnaireInvestigation::station_existe(int station_id){
  */
 std::vector<unsigned int> GestionnaireInvestigation::plus_court_chemin_dijsktra(unsigned int num_station_depart, unsigned int num_station_dest)
 {
-	timeval tv1, tv2;
+	timeval tv1 { }, tv2 { };
 
 	if (gettimeofday(&tv1, 0) != 0)
 			throw std::logic_error("gettimeofday() a échoué");
 
 	std::vector<unsigned int> chemin;
-	m_reseau.meilleurPlusCourtChemin(num_station_depart, num_station_dest, chemin);
+	m_reseau.dijkstra(num_station_depart, num_station_dest, chemin);
 
 	if (gettimeofday(&tv2, 0) != 0)
 			throw std::logic_error("gettimeofday() a échoué");
@@ -141,7 +161,7 @@ std::vector<unsigned int> GestionnaireInvestigation::plus_court_chemin_dijsktra(
  */
 std::vector<unsigned int> GestionnaireInvestigation::plus_court_chemin_bellman(unsigned int num_station_depart, unsigned int num_station_dest)
 {
-	timeval tv1, tv2;
+	timeval tv1 { }, tv2 { };
 
 	if (gettimeofday(&tv1, 0) != 0)
 			throw std::logic_error("gettimeofday() a échoué");
@@ -164,7 +184,7 @@ double GestionnaireInvestigation::tester_n_paires_dijsktra(unsigned int nb_paire
 	/* initialize random seed: */
 	srand (seed);
 	double total = 0;
-	unsigned int i =0;
+	unsigned int i { 0 };
 
 	std::vector<unsigned int > v;
 
@@ -173,7 +193,7 @@ double GestionnaireInvestigation::tester_n_paires_dijsktra(unsigned int nb_paire
 	}
 
 	while(i < nb_paires){
-		timeval tv1, tv2;
+		timeval tv1 { }, tv2 { };
 		int k = rand() % v.size();
 		int j = rand() % v.size();
 
@@ -195,7 +215,46 @@ double GestionnaireInvestigation::tester_n_paires_dijsktra(unsigned int nb_paire
 	}
 	return total/(1.0*nb_paires);
 }
+/*!
+ * Mesurer le temps d'exécution moyen de l'algorithme dijsktra modifie sur toutes les paires de
+ * stations du réseau de la RTC
+ * return un réel représentant le temps moyen de l'algorithme en microsecondes
+ */
+double GestionnaireInvestigation::tester_n_paires_dijkstra_modifie(unsigned int nb_paires, unsigned int seed){
+	/* initialize random seed: */
+	srand (seed);
+	double total = 0;
+	unsigned int i { 0 };
 
+	std::vector<unsigned int > v;
+
+	for(auto st1: stations){
+		v.push_back(st1.first);
+	}
+
+	while(i < nb_paires){
+		timeval tv1 { }, tv2 { };
+		int k = rand() % v.size();
+		int j = rand() % v.size();
+
+
+		if (gettimeofday(&tv1, 0) != 0)
+				throw std::logic_error("gettimeofday() a échoué");
+
+		std::vector<unsigned int> chemin;
+		plus_court_chemin_dijsktra_modifie(v[j], v[k]);
+		//m_reseau.dijkstra(v[j], v[k], chemin);
+
+		//Je cherche le nombre de chemin et le nombre d'arcs du réseau
+		std::cout << "Le réseau possède : " << m_reseau.nombreSommets() << " sommets   et "<< m_reseau.nombreArcs() << " arcs" << std::endl << std::endl;
+
+		if (gettimeofday(&tv2, 0) != 0)
+				throw std::logic_error("gettimeofday() a échoué");
+		total = total + tempsExecution(tv1, tv2);
+		i++;
+	}
+	return total/(1.0*nb_paires);
+}
 
 /*!
  * Mesurer le temps d'exécution moyen de l'algorithme bellmanFord sur toutes les paires de stations du réseau de la RTC
@@ -205,7 +264,7 @@ double GestionnaireInvestigation::tester_n_paires_bellman(unsigned int nb_paires
 	/* initialize random seed: */
 	srand (seed);
 	double total = 0;
-	unsigned int i =0;
+	unsigned int i { 0 };
 
 	std::vector<unsigned int > v;
 
@@ -215,7 +274,7 @@ double GestionnaireInvestigation::tester_n_paires_bellman(unsigned int nb_paires
 
 
 	while(i < nb_paires){
-		timeval tv1, tv2;
+		timeval tv1 { }, tv2 { };
 		int k = rand() % v.size();
 		int j = rand() % v.size();
 
@@ -266,7 +325,7 @@ void GestionnaireInvestigation::ajouter_aretes_empruntees_par_bus()
 		std::vector<Arret> seq = kv.second.getArrets();
 		for(unsigned int i=0; i< seq.size()-1; i++)
 		{
-			int d = seq[i+1].getHeureDepart() - seq[i].getHeureArrivee();
+			int d { seq[i + 1].getHeureDepart() - seq[i].getHeureArrivee() };
 			if(!m_reseau.arcExiste(seq[i].getStationId(), seq[i+1].getStationId()))
 			{
 				m_reseau.ajouterArc(seq[i].getStationId(), seq[i+1].getStationId(), d, (unsigned int)MoyenDeplacement::BUS);
@@ -282,9 +341,9 @@ void GestionnaireInvestigation::ajouter_aretes_empruntees_par_bus()
  */
 void GestionnaireInvestigation::ajouter_aretes_transfert(double dist_transfert)
 {
-	unsigned int st_dep, st_dest, t;
-	unsigned int i, j;
-	double distance;
+	unsigned int st_dep { }, st_dest { }, t { };
+	unsigned int i { }, j { };
+	double distance { };
 	std::vector<unsigned int> list_stations;
 	for(auto st: stations){
 		list_stations.push_back(st.first);

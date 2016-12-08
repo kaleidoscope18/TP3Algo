@@ -1,36 +1,37 @@
 /*
- * PairingH.h
+ * PairingHeap.cpp
  *
- *  Created on: 2016-12-07
- *      Author: etudiant
+ *  Created on: 2016-12-08
+ *  Author : Nadia
+ *    Source #1 : https://github.com/saadtaame/pairing-heap/blob/master/pairing_heap.cc
+ *    Source #2 : https://users.cs.fiu.edu/~weiss/ (Mark Allen Weiss)
  */
-
-#ifndef PAIRINGH_H_
-#define PAIRINGH_H_
+#ifndef PAIRING_HEAP_H_
+#define PAIRING_HEAP_H_
 
 #include <iostream>
 #include "Noeud.h"
+
 
 class PairingH
 {
   public:
 	PairingH();
-	PairingH(const PairingH & nouvPH);
 
 	bool estVide() const;
+	const unsigned int & trouverDistanceMin() const;
+
+	Noeud * ajouterNoeud(const unsigned int & dist, const unsigned int & sommet);
+	void supprimerRacine();
+	void diminuerDistance(Noeud *p, const unsigned int & newVal);
 	Noeud * getRacine() const;
-	Noeud *ajouterNoeud(const int & dist, const unsigned int & sommet);
-	void retirerRacine();
-	void diminuerDistance(Noeud *p, const int & nouvDistance);
-	int nombreNoeuds() const;
+
 	void parcoursDOT(Noeud * p_debut) const;
-	Noeud * racine;
 
   private:
-	static int nbNoeuds;
-	void fusionner(Noeud * & first, Noeud *second) const;
-	Noeud * fusionPassePasse(Noeud *firstSibling) const;
+	Noeud * racine;
+	void fusionner(Noeud * & A, Noeud * B) const;
+	Noeud * fusionPassePasse(Noeud * noeud) const;
 };
 
-
-#endif /* PAIRINGH_H_ */
+#endif

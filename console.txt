@@ -1,56 +1,306 @@
-Chargement des données terminé en 14.867 secondes
+Chargement des données terminé en 14.6737 secondes
 Initialisation du réseau ....
-Chargement des données terminé en 6.77142 secondes
+Chargement des données terminé en 6.79387 secondes
 
-le sommet de destination est atteignable
-la longueur du chemin est : 1420
-la fonction s'est terminé en 18837microsecondes
+la fonction s'est terminé en 19793microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 891
-la fonction s'est terminé en 13744microsecondes
+la fonction s'est terminé en 13474microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 1071
-la fonction s'est terminé en 15726microsecondes
+la fonction s'est terminé en 14693microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 919
-la fonction s'est terminé en 15250microsecondes
+la fonction s'est terminé en 14993microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 986
-la fonction s'est terminé en 15006microsecondes
+la fonction s'est terminé en 18706microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 3228
-la fonction s'est terminé en 15044microsecondes
+la fonction s'est terminé en 16908microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 3219
-la fonction s'est terminé en 22972microsecondes
+la fonction s'est terminé en 24246microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 1972
-la fonction s'est terminé en 25639microsecondes
+la fonction s'est terminé en 16102microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 2076
-la fonction s'est terminé en 20847microsecondes
+la fonction s'est terminé en 22826microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-le sommet de destination est atteignable
-la longueur du chemin est : 150
-la fonction s'est terminé en 17452microsecondes
+la fonction s'est terminé en 24531microsecondes
 Le réseau possède : 4604 sommets   et 19322 arcs
 
-Temps moyen de dijsktra 18182
+la fonction s'est terminé en 14486microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 19272microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13073microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 11857microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13321microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13153microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 27724microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 15634microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 22078microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 23513microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18772microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 19577microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 21724microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 15114microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 31424microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 14433microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 14945microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 20079microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 20238microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 16360microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 24671microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18530microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 21644microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 24772microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 25495microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 33942microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18697microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 11721microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 22688microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 25463microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13489microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 20951microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13473microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 25915microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18258microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 15038microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 16184microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 15318microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 21243microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 29155microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 21805microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18521microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 17275microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 14382microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 16044microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 29291microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 16569microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13820microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 31621microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13832microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 21105microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 14866microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13545microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 17005microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 25049microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 24661microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 23398microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 26686microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 17542microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18205microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 28016microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 20838microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 29252microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 20425microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 24718microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 25014microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 25443microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 27059microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 21155microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 28467microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 23202microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 22184microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 33206microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13270microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 15659microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 19138microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 19790microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 26330microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 20032microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 12482microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 12908microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 26109microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 19801microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 13835microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 12946microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 22345microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 10939microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 17048microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18925microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+la fonction s'est terminé en 18961microsecondes
+Le réseau possède : 4604 sommets   et 19322 arcs
+
+Temps moyen de dijkstra modifié avec pairing heap : 20174.9
 

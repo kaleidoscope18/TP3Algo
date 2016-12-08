@@ -11,14 +11,17 @@
 #include <stdexcept>
 #include <vector>
 /**
- * Constructeur par défaut
+ * \brief Constructeur par défaut
+ * \post Une instance de la classe PairingH est initialisée
  */
 PairingH::PairingH() {
 	racine = nullptr;
 }
 /**
- * ajouter un noeud dans le heap tout en conservant les propriétés du heap
- * Return un pointeur vers l'objet Noeud créé
+ * \brief ajouter un noeud dans le heap tout en conservant les propriétés du heap en O(1)
+ * \param[in] dist la distance entre ce noeud et son prédécesseur
+ * \param[in] sommet le numéro de la station
+ * \Return Un pointeur vers l'objet Noeud créé
  */
 Noeud * PairingH::ajouterNoeud(const unsigned int & x,
 		const unsigned int & sommet) {
@@ -32,7 +35,7 @@ Noeud * PairingH::ajouterNoeud(const unsigned int & x,
 }
 
 /**
- * retourne la distance de la racine du monceau (qui a la distance minimale)
+ * \brief retourne la distance de la racine du monceau (qui a la distance minimale) en O(1)
  */
 const unsigned int & PairingH::trouverDistanceMin() const {
 	if (estVide())
@@ -40,7 +43,7 @@ const unsigned int & PairingH::trouverDistanceMin() const {
 	return racine->distance;
 }
 /**
- * retourne la racine du monceau (qui a la distance minimale)
+ * \brief retourne la racine du monceau (qui a la distance minimale)
  */
 Noeud * PairingH::getRacine() const {
 	if (estVide())
@@ -48,8 +51,8 @@ Noeud * PairingH::getRacine() const {
 	return racine;
 }
 /**
- * Retire la racine (item ayant la distance minimale) du monceau
- * Le heap ne doit pas etre vide
+ * \brief Retire la racine (item ayant la distance minimale) du monceau O(log n)
+ * \pre Le heap ne doit pas etre vide
  */
 void PairingH::supprimerRacine() {
 	if (estVide())
@@ -65,16 +68,21 @@ void PairingH::supprimerRacine() {
 	delete oldRoot;
 }
 /**
- * retourne vrai si le monceau est vide (racine == nullptr)
- * retourne faux s'il y a une racine
+ * \brief Indiquer si le monceau est vide
+ * \return vrai si le monceau est vide (racine == NULL)
+ * \return faux s'il y a une racine
  */
 bool PairingH::estVide() const {
 	return racine == nullptr;
 }
 /*
- * Implementation du decrease-key
+ * \brief Implementation du decrease-key en O(log n)
  * La nouvelle valeur doit etre inférieure à la valeur deja existante pour ce noeud
  * Sinon il ne se passera rien
+ * \param[in] p un noeud du tas
+ * \param[in] nouvDistance une nouvelle distance
+ * \return rien si la nouvelle distance est plus grande que l'ancienne
+ * \return modifie la distance par référence si la nouvelle est plus petite ou égale que l'ancienne
  */
 void PairingH::diminuerDistance(Noeud *p, const unsigned int & newVal) {
 	if (p->distance < newVal)
@@ -94,8 +102,11 @@ void PairingH::diminuerDistance(Noeud *p, const unsigned int & newVal) {
 }
 
 /**
+ * \brief fusion de deux noeuds en O(1)
  * Operation pour maintenir l'ordre du monceau et respecter les règles de base
  * Le noeud A ne doit pas être un pointeur nullptr
+ * \param[in] le noeud A est donc normalement la racine du premier monceau
+ * \param[in] le noeud B est donc la racine du deuxieme monceau
  */
 void PairingH::fusionner(Noeud * & A, Noeud * B) const {
 	if (B == nullptr)
@@ -122,8 +133,9 @@ void PairingH::fusionner(Noeud * & A, Noeud * B) const {
 }
 
 /*
- * implementation de two-pass merge / pairing
- * param noeud : est l'enfant gauche de la racine qui vient d'etre extraite
+ * \brief implementation de two-pass merge / pairing en O(log n)
+ * pre ne pas avoir de racine nulle
+ * param[in] noeud : est l'enfant gauche de la racine qui vient d'etre extraite
  */
 Noeud * PairingH::fusionPassePasse(Noeud * noeud) const {
 	if (noeud->voisin == nullptr) //on ne doit pas avoir de racine nulle..
@@ -161,7 +173,7 @@ Noeud * PairingH::fusionPassePasse(Noeud * noeud) const {
 	return sousMonceaux[0];
 }
 /*
- * Génère le texte dans la console pour avoir un graphe en langage DOT
+ * \brief Génère le texte dans la console pour avoir un graphe en langage DOT
  * On peut redessiner avec https://stamm-wilbrandt.de/GraphvizFiddle/ (visualisation du heap)
  */
 void PairingH::parcoursDOT(Noeud * p_debut) const

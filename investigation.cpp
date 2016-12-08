@@ -126,7 +126,7 @@ std::vector<unsigned int> GestionnaireInvestigation::plus_court_chemin_dijsktra_
 	if (gettimeofday(&tv2, 0) != 0)
 			throw std::logic_error("gettimeofday() a échoué");
 
-	std::cout << "la fonction s'est terminé en " << tempsExecution(tv1, tv2) << "microsecondes" << std::endl;
+	//std::cout << "la fonction s'est terminé en " << tempsExecution(tv1, tv2) << "microsecondes" << std::endl;
 	return chemin;}
 /*!
  * \brief Trouver le plus court chemin en autobus pour aller deux stations A et B
@@ -205,9 +205,6 @@ double GestionnaireInvestigation::tester_n_paires_dijsktra(unsigned int nb_paire
 		plus_court_chemin_dijsktra(v[j], v[k]);
 		//m_reseau.dijkstra(v[j], v[k], chemin);
 
-		//Je cherche le nombre de chemin et le nombre d'arcs du réseau
-		std::cout << "Le réseau possède : " << m_reseau.nombreSommets() << " sommets   et "<< m_reseau.nombreArcs() << " arcs" << std::endl << std::endl;
-
 		if (gettimeofday(&tv2, 0) != 0)
 				throw std::logic_error("gettimeofday() a échoué");
 		total = total + tempsExecution(tv1, tv2);
@@ -216,7 +213,7 @@ double GestionnaireInvestigation::tester_n_paires_dijsktra(unsigned int nb_paire
 	return total/(1.0*nb_paires);
 }
 /*!
- * Mesurer le temps d'exécution moyen de l'algorithme dijsktra modifie sur toutes les paires de
+ * Mesurer le temps d'exécution moyen de l'algorithme dijsktra modifié sur toutes les paires de
  * stations du réseau de la RTC
  * return un réel représentant le temps moyen de l'algorithme en microsecondes
  */
@@ -244,9 +241,6 @@ double GestionnaireInvestigation::tester_n_paires_dijkstra_modifie(unsigned int 
 		std::vector<unsigned int> chemin;
 		plus_court_chemin_dijsktra_modifie(v[j], v[k]);
 		//m_reseau.dijkstra(v[j], v[k], chemin);
-
-		//Je cherche le nombre de chemin et le nombre d'arcs du réseau
-		std::cout << "Le réseau possède : " << m_reseau.nombreSommets() << " sommets   et "<< m_reseau.nombreArcs() << " arcs" << std::endl << std::endl;
 
 		if (gettimeofday(&tv2, 0) != 0)
 				throw std::logic_error("gettimeofday() a échoué");
@@ -285,9 +279,6 @@ double GestionnaireInvestigation::tester_n_paires_bellman(unsigned int nb_paires
 		std::vector<unsigned int> chemin;
 		plus_court_chemin_bellman(v[j], v[k]);
 		//m_reseau.bellmanFord(v[j], v[k], chemin);
-
-		//Je cherche le nombre de chemin et le nombre d'arcs du réseau
-		std::cout << "Le réseau possède : " << m_reseau.nombreSommets() << " sommets   et "<< m_reseau.nombreArcs() << " arcs" << std::endl << std::endl;
 
 		if (gettimeofday(&tv2, 0) != 0)
 				throw std::logic_error("gettimeofday() a échoué");

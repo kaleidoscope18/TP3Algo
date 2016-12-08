@@ -248,10 +248,14 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest,
 int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
 		unsigned int numDest, std::vector<unsigned int> & chemin)
 				throw (std::logic_error) {
-	if (!sommetExiste(numOrigine) || !sommetExiste(numDest))
+
+	if (!sommetExiste(numOrigine) || !sommetExiste(numDest)){
 		throw std::logic_error("dijkstra: Un des sommets n'existe pas!");
+	}
+
 	unsigned int longueur_chemin { 0 };
 	PairingH heap { };
+
 	// dans le heap chaque Noeud a la distance et le sommet associé au noeud
 	std::unordered_map<unsigned int, std::pair<Noeud *, unsigned int>> sommets;
 	// <sommet depart, <ptr_noeud associé au sommet dans le heap, predecesseur>>
@@ -260,17 +264,17 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
 		sommets[kv.first] = std::pair<Noeud *, unsigned int>(
 				heap.ajouterNoeud(9999, kv.first), 9999);
 	}
+
 	heap.diminuerDistance(sommets[numOrigine].first, 0);
 
 	int max_iter = m_arcs.size();
 	for (int i = 0; i < max_iter; ++i) { //on peut juste faire appel aux fonctions du heap seulement quand le heap est pas vide
-										 //(la 4603e fois qu'on delete qqch ca chie après)
 
 		Noeud * u_etoile = heap.getRacine(); //u* est noeud dans Q tel que d(u) est minimal = racine du heap
 
-
 		unsigned int dist_u_etoile { u_etoile->distance };
 		unsigned int u_etoile_sommet { u_etoile->m_sommet };
+
 		for (auto u : m_arcs[u_etoile->m_sommet]) { //on itère sur tous les u adj a u*
 			if(sommets[u.first].first != nullptr){ //on ne veut que les u non solutionnés
 				unsigned int dist_temp { dist_u_etoile + u.second.first }; // temp = d(u*) + w(u*, u)
@@ -296,16 +300,17 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine,
     else{
     	std::vector<unsigned int> chemin_inverse;
 		unsigned int courant { numDest };
-    	while(courant != numOrigine){
+
+		while(courant != numOrigine){
     		chemin_inverse.push_back(courant);
     		courant = sommets[courant].second;
     	}
+
     	chemin.push_back(numOrigine);
     	for(auto i : chemin_inverse){
     		chemin.push_back(i);
     	}
     }
-
 	return longueur_chemin;
 }
 

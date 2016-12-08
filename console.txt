@@ -1,28 +1,204 @@
-digraph mongraphe{
-5 -> 994 [color=blue]
-994 -> 5 [color=black]
-994 -> 10 [color=red]
-{rank = same; 994; 10;}
-10 -> 5 [color=black]
-10 -> 972 [color=blue]
-972 -> 10 [color=black]
-972 -> 990 [color=red]
-{rank = same; 972; 990;}
-990 -> 10 [color=black]
-972 -> 974 [color=blue]
-974 -> 972 [color=black]
-974 -> 976 [color=blue]
-976 -> 974 [color=black]
-976 -> 978 [color=blue]
-978 -> 976 [color=black]
-978 -> 980 [color=blue]
-980 -> 978 [color=black]
-980 -> 982 [color=blue]
-982 -> 980 [color=black]
-982 -> 984 [color=blue]
-984 -> 982 [color=black]
-994 -> 996 [color=blue]
-996 -> 994 [color=black]
-996 -> 998 [color=blue]
-998 -> 996 [color=black]
-}
+Chargement des données terminé en 15.6512 secondes
+Initialisation du réseau ....
+Chargement des données terminé en 7.1428 secondes
+
+la racine est : 5067 et sa distance est : 1
+4603
+temp = d(u*) + w(u*, u) <=> 116
+sommet 5140 a passe de 9999 a 116
+la racine est devenue : 5140 avec une distance de 116
+temp = d(u*) + w(u*, u) <=> 25
+sommet 5141 a passe de 9999 a 25
+la racine est devenue : 5141 avec une distance de 25
+temp = d(u*) + w(u*, u) <=> 31
+sommet 5068 a passe de 9999 a 31
+la racine est devenue : 5141 avec une distance de 25
+la racine est : 5141 et sa distance est : 25
+4602
+temp = d(u*) + w(u*, u) <=> 115
+temp = d(u*) + w(u*, u) <=> 49
+temp = d(u*) + w(u*, u) <=> 55
+sommet 5142 a passe de 9999 a 55
+la racine est devenue : 5068 avec une distance de 31
+la racine est : 5068 et sa distance est : 31
+4601
+temp = d(u*) + w(u*, u) <=> 43
+sommet 5140 a passe de 116 a 43
+la racine est devenue : 5140 avec une distance de 43
+temp = d(u*) + w(u*, u) <=> 121
+temp = d(u*) + w(u*, u) <=> 155
+sommet 5139 a passe de 9999 a 155
+la racine est devenue : 5140 avec une distance de 43
+temp = d(u*) + w(u*, u) <=> 61
+sommet 5069 a passe de 9999 a 61
+la racine est devenue : 5140 avec une distance de 43
+la racine est : 5140 et sa distance est : 43
+4600
+temp = d(u*) + w(u*, u) <=> 158
+temp = d(u*) + w(u*, u) <=> 55
+sommet 5068 a passe de 50386912 a 55
+la racine est devenue : 5142 avec une distance de 55
+temp = d(u*) + w(u*, u) <=> 151
+temp = d(u*) + w(u*, u) <=> 73
+la racine est : 5142 et sa distance est : 55
+4599
+temp = d(u*) + w(u*, u) <=> 79
+sommet 5066 a passe de 9999 a 79
+la racine est devenue : 0 avec une distance de 55
+temp = d(u*) + w(u*, u) <=> 85
+sommet 5143 a passe de 9999 a 85
+la racine est devenue : 0 avec une distance de 55
+la racine est : 0 et sa distance est : 55
+4598
+la racine est : 5069 et sa distance est : 61
+4597
+temp = d(u*) + w(u*, u) <=> 165
+sommet 5138 a passe de 9999 a 165
+la racine est devenue : 5066 avec une distance de 79
+temp = d(u*) + w(u*, u) <=> 74
+sommet 5139 a passe de 155 a 74
+la racine est devenue : 5139 avec une distance de 74
+temp = d(u*) + w(u*, u) <=> 169
+sommet 5140 a passe de 50309904 a 169
+la racine est devenue : 5139 avec une distance de 74
+temp = d(u*) + w(u*, u) <=> 91
+sommet 5070 a passe de 9999 a 91
+la racine est devenue : 5139 avec une distance de 74
+la racine est : 5139 et sa distance est : 74
+4596
+temp = d(u*) + w(u*, u) <=> 198
+sommet 5068 a passe de 50387456 a 198
+la racine est devenue : 5066 avec une distance de 79
+temp = d(u*) + w(u*, u) <=> 87
+sommet 5069 a passe de 50309904 a 87
+la racine est devenue : 5066 avec une distance de 79
+temp = d(u*) + w(u*, u) <=> 164
+temp = d(u*) + w(u*, u) <=> 104
+sommet 5140 a passe de 169 a 104
+la racine est devenue : 5066 avec une distance de 79
+la racine est : 5066 et sa distance est : 79
+4595
+temp = d(u*) + w(u*, u) <=> 214
+temp = d(u*) + w(u*, u) <=> 103
+sommet 5142 a passe de 50386368 a 103
+la racine est devenue : 0 avec une distance de 87
+temp = d(u*) + w(u*, u) <=> 109
+la racine est : 0 et sa distance est : 87
+4594
+la racine est : 0 et sa distance est : 103
+4593
+la racine est : 0 et sa distance est : 104
+4592
+la racine est : 0 et sa distance est : 198
+4591
+la racine est : 5143 et sa distance est : 85
+4590
+temp = d(u*) + w(u*, u) <=> 214
+sommet 5064 a passe de 9999 a 214
+la racine est devenue : 5064 avec une distance de 214
+temp = d(u*) + w(u*, u) <=> 97
+sommet 5065 a passe de 9999 a 97
+la racine est devenue : 5065 avec une distance de 97
+temp = d(u*) + w(u*, u) <=> 220
+sommet 5066 a passe de 50385824 a 220
+la racine est devenue : 5065 avec une distance de 97
+temp = d(u*) + w(u*, u) <=> 115
+sommet 5153 a passe de 9999 a 115
+la racine est devenue : 5065 avec une distance de 97
+la racine est : 5065 et sa distance est : 97
+4589
+temp = d(u*) + w(u*, u) <=> 109
+sommet 5143 a passe de 50309904 a 109
+la racine est devenue : 0 avec une distance de 109
+temp = d(u*) + w(u*, u) <=> 231
+temp = d(u*) + w(u*, u) <=> 127
+sommet 5066 a passe de 220 a 127
+la racine est devenue : 0 avec une distance de 109
+la racine est : 0 et sa distance est : 109
+4588
+la racine est : 5153 et sa distance est : 115
+4587
+temp = d(u*) + w(u*, u) <=> 129
+sommet 5064 a passe de 214 a 129
+la racine est devenue : 0 avec une distance de 127
+temp = d(u*) + w(u*, u) <=> 145
+sommet 5154 a passe de 9999 a 145
+la racine est devenue : 0 avec une distance de 127
+temp = d(u*) + w(u*, u) <=> 154
+sommet 5299 a passe de 9999 a 154
+la racine est devenue : 0 avec une distance de 127
+temp = d(u*) + w(u*, u) <=> 180
+sommet 5310 a passe de 9999 a 180
+la racine est devenue : 0 avec une distance de 127
+temp = d(u*) + w(u*, u) <=> 249
+sommet 5065 a passe de 50388000 a 249
+la racine est devenue : 0 avec une distance de 127
+la racine est : 0 et sa distance est : 127
+4586
+la racine est : 5064 et sa distance est : 129
+4585
+temp = d(u*) + w(u*, u) <=> 143
+sommet 5153 a passe de 46162000 a 143
+la racine est devenue : 0 avec une distance de 143
+temp = d(u*) + w(u*, u) <=> 159
+sommet 5065 a passe de 249 a 159
+la racine est devenue : 0 avec une distance de 143
+temp = d(u*) + w(u*, u) <=> 207
+temp = d(u*) + w(u*, u) <=> 180
+temp = d(u*) + w(u*, u) <=> 258
+sommet 5143 a passe de 50308816 a 258
+la racine est devenue : 0 avec une distance de 143
+temp = d(u*) + w(u*, u) <=> 261
+la racine est : 0 et sa distance est : 143
+4584
+la racine est : 0 et sa distance est : 159
+4583
+la racine est : 0 et sa distance est : 258
+4582
+la racine est : 0 et sa distance est : 50306592
+*** Error in `/home/etudiant/workspace/TP3Algo/Debug/TP3Algo': double free or corruption (fasttop): 0x000000000300ed10 ***
+======= Backtrace: =========
+/lib/x86_64-linux-gnu/libc.so.6(+0x77725)[0x7f76b7d58725]
+/lib/x86_64-linux-gnu/libc.so.6(+0x7ff4a)[0x7f76b7d60f4a]
+/lib/x86_64-linux-gnu/libc.so.6(cfree+0x4c)[0x7f76b7d64abc]
+/home/etudiant/workspace/TP3Algo/Debug/TP3Algo[0x4029f0]
+/home/etudiant/workspace/TP3Algo/Debug/TP3Algo[0x41731b]
+/home/etudiant/workspace/TP3Algo/Debug/TP3Algo[0x4051ec]
+/home/etudiant/workspace/TP3Algo/Debug/TP3Algo[0x40569c]
+/home/etudiant/workspace/TP3Algo/Debug/TP3Algo[0x415e36]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf0)[0x7f76b7d01830]
+/home/etudiant/workspace/TP3Algo/Debug/TP3Algo[0x402689]
+======= Memory map: ========
+00400000-00446000 r-xp 00000000 08:01 44846                              /home/etudiant/workspace/TP3Algo/Debug/TP3Algo
+00645000-00646000 r--p 00045000 08:01 44846                              /home/etudiant/workspace/TP3Algo/Debug/TP3Algo
+00646000-00647000 rw-p 00046000 08:01 44846                              /home/etudiant/workspace/TP3Algo/Debug/TP3Algo
+01848000-34e4a000 rw-p 00000000 00:00 0                                  [heap]
+7f76b0000000-7f76b0021000 rw-p 00000000 00:00 0 
+7f76b0021000-7f76b4000000 ---p 00000000 00:00 0 
+7f76b7ce1000-7f76b7ea1000 r-xp 00000000 08:01 137544                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f76b7ea1000-7f76b80a0000 ---p 001c0000 08:01 137544                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f76b80a0000-7f76b80a4000 r--p 001bf000 08:01 137544                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f76b80a4000-7f76b80a6000 rw-p 001c3000 08:01 137544                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f76b80a6000-7f76b80aa000 rw-p 00000000 00:00 0 
+7f76b80aa000-7f76b80c0000 r-xp 00000000 08:01 137582                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f76b80c0000-7f76b82bf000 ---p 00016000 08:01 137582                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f76b82bf000-7f76b82c0000 rw-p 00015000 08:01 137582                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f76b82c0000-7f76b83c8000 r-xp 00000000 08:01 137614                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f76b83c8000-7f76b85c7000 ---p 00108000 08:01 137614                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f76b85c7000-7f76b85c8000 r--p 00107000 08:01 137614                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f76b85c8000-7f76b85c9000 rw-p 00108000 08:01 137614                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f76b85c9000-7f76b873b000 r-xp 00000000 08:01 266791                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21
+7f76b873b000-7f76b893b000 ---p 00172000 08:01 266791                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21
+7f76b893b000-7f76b8945000 r--p 00172000 08:01 266791                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21
+7f76b8945000-7f76b8947000 rw-p 0017c000 08:01 266791                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21
+7f76b8947000-7f76b894b000 rw-p 00000000 00:00 0 
+7f76b894b000-7f76b8971000 r-xp 00000000 08:01 137516                     /lib/x86_64-linux-gnu/ld-2.23.so
+7f76b8b54000-7f76b8b59000 rw-p 00000000 00:00 0 
+7f76b8b6d000-7f76b8b70000 rw-p 00000000 00:00 0 
+7f76b8b70000-7f76b8b71000 r--p 00025000 08:01 137516                     /lib/x86_64-linux-gnu/ld-2.23.so
+7f76b8b71000-7f76b8b72000 rw-p 00026000 08:01 137516                     /lib/x86_64-linux-gnu/ld-2.23.so
+7f76b8b72000-7f76b8b73000 rw-p 00000000 00:00 0 
+7ffee6e0b000-7ffee6e2c000 rw-p 00000000 00:00 0                          [stack]
+7ffee6f0e000-7ffee6f10000 r--p 00000000 00:00 0                          [vvar]
+7ffee6f10000-7ffee6f12000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]

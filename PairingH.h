@@ -24,9 +24,9 @@ class PairingH
 	void diminuerDistance(Noeud *p, const int & nouvDistance);
 	int nombreNoeuds() const;
 	void parcoursDOT(Noeud * p_debut) const;
+	Noeud * racine;
 
   private:
-	Noeud *racine;
 	static int nbNoeuds;
 	void fusionner(Noeud * & first, Noeud *second) const;
 	Noeud * fusionPassePasse(Noeud *firstSibling) const;

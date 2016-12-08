@@ -16,14 +16,14 @@ int PairingH::nbNoeuds { 0 };
  */
 PairingH::PairingH()
 {
-	racine = NULL;
+	racine = nullptr;
 }
 /*
  * Constructeur de copie
  */
 PairingH::PairingH(const PairingH & nouvPH)
 {
-	racine = NULL;
+	racine = nullptr;
 	*this = nouvPH;
 }
 /**
@@ -41,7 +41,7 @@ Noeud * PairingH::ajouterNoeud(const int & dist, const unsigned int & sommet)
 {
 	Noeud *newNoeud = new Noeud(dist, sommet);
 
-	if( racine == NULL )
+	if( racine == nullptr )
 		racine = newNoeud; //si on n'avait pas de racine, rien de plus a faire
 	else
 		fusionner(racine, newNoeud); //sinon, on doit s'assurer que le noeud se place au bon endroit et que le heap
@@ -67,8 +67,8 @@ void PairingH::retirerRacine()
 
 	Noeud * oldracine = racine;
 
-	if(racine->enfantGauche == NULL) //si on retire le dernier noeud existant dans le monceau la racine devient nulle
-		racine = NULL;
+	if(racine->enfantGauche == nullptr) //si on retire le dernier noeud existant dans le monceau la racine devient nulle
+		racine = nullptr;
 	else
 		racine = fusionPassePasse(racine->enfantGauche); //on doit refaire le heap pour s'assurer
 															 // de respecter les règles du monceau (min-heap)
@@ -76,12 +76,12 @@ void PairingH::retirerRacine()
 	delete oldracine;
 }
 /**
- * retourne vrai si le monceau est vide (racine == NULL)
+ * retourne vrai si le monceau est vide (racine == nullptr)
  * retourne faux s'il y a une racine
  */
 bool PairingH::estVide() const
 {
-	return racine == NULL;
+	return racine == nullptr;
 }
 /*
  * Implementation du decrease-key
@@ -94,14 +94,18 @@ void PairingH::diminuerDistance(Noeud *p, const int & nouvDistance)
 		return;    // on doit diminuer et non augmenter la distance
 	p->distance = nouvDistance; //on diminue la valeur
 	if( p != racine ) { //si c'est la racine, on n'a pas d'opération supplémentaire à faire
-		if(p->voisin != NULL)
+		if(p->voisin != nullptr)
 			p->voisin->maitre = p->maitre;
-		if(p->maitre->enfantGauche == p)
-			p->maitre->enfantGauche = p->voisin;
-		else
-			p->maitre->voisin = p->voisin;
-
-		p->voisin = NULL;
+		if(p->maitre != nullptr)
+		{
+			if(p->maitre->enfantGauche == p){
+				p->maitre->enfantGauche = p->voisin;
+			}
+			else{
+				p->maitre->voisin = p->voisin;
+			}
+		}
+		p->voisin = nullptr;
 		fusionner(racine, p);
 	}
 }
@@ -109,7 +113,7 @@ void PairingH::diminuerDistance(Noeud *p, const int & nouvDistance)
 /**
  * fusion de deux noeuds
  * doit respecter les regles du min-heap (racine doit etre la valeur minimale)
- * le noeud A ne peut pas etre NULL et ne doit pas avoir de voisin
+ * le noeud A ne peut pas etre nullptr et ne doit pas avoir de voisin
  * le noeud A est donc normalement la racine du premier monceau
  * le noeud B est donc la racine du deuxieme monceau
  * le noeud A est la racine du nouvel arbre
@@ -117,14 +121,14 @@ void PairingH::diminuerDistance(Noeud *p, const int & nouvDistance)
 
 void PairingH::fusionner(Noeud * & A, Noeud *B) const
 {
-	if(B == NULL)
+	if(B == nullptr)
 		return;
 
 	if( B->distance < A->distance ) {//A devient l'enfant gauche de B
-		B->maitre = A->maitre; //A devrait normalement pas avoir de maitre (NULL)
+		B->maitre = A->maitre; //A devrait normalement pas avoir de maitre (nullptr)
 		A->maitre = B;
 		A->voisin = B->enfantGauche;
-		if(A->voisin != NULL)
+		if(A->voisin != nullptr)
 			A->voisin->maitre = A;
 		B->enfantGauche = A;
 		A = B; //B est devenu la racine, donc A prend la place de l'enfant gauche de B
@@ -132,10 +136,10 @@ void PairingH::fusionner(Noeud * & A, Noeud *B) const
 	else { //B va devenir l'enfant gauche de A
 		B->maitre = A;
 		A->voisin = B->voisin;
-		if(A->voisin != NULL)
+		if(A->voisin != nullptr)
 			A->voisin->maitre = A;
 		B->voisin = A->enfantGauche;
-		if(B->voisin != NULL)
+		if(B->voisin != nullptr)
 			B->voisin->maitre = B;
 		A->enfantGauche = B; //A reste la racine ici
 	}
@@ -147,27 +151,30 @@ void PairingH::fusionner(Noeud * & A, Noeud *B) const
 Noeud * PairingH::fusionPassePasse(Noeud * voisinImmediat) const
 {
     {
-    	if(voisinImmediat == NULL){ //on ne doit pas avoir de racine nulle..
-    		return NULL;
+    	if(voisinImmediat == nullptr){ //on ne doit pas avoir de racine nulle..
+    		return nullptr;
     	}
     	//pas de fusionPassePasse si on a pas de voisin
-        if(voisinImmediat->voisin == NULL)
+        if(voisinImmediat->voisin == nullptr)
             return voisinImmediat;
 
             // On pourra ensuite mettre les sous-heaps dans le vecteur pour les refusionner plus tard
         static std::vector<Noeud *> sousMonceaux(5);
         int nombreVoisins = 0;
-        for( ; voisinImmediat != NULL; nombreVoisins++) //pour chaque voisin qui existe
+        for( ; voisinImmediat != nullptr; nombreVoisins++) //pour chaque voisin qui existe
         {
             if(nombreVoisins == sousMonceaux.size()) //reallocation du vecteur, optimal pour pas avoir de reallocation a chaque fois
                 sousMonceaux.resize(nombreVoisins*2);
             sousMonceaux[nombreVoisins] = voisinImmediat;
-            voisinImmediat->maitre->voisin = NULL;  // après avoir stocké le voisin, on brise les liens
+            if(voisinImmediat->maitre != nullptr)
+            {
+            	voisinImmediat->maitre->voisin = nullptr;  // après avoir stocké le voisin, on brise les liens
+            }
             voisinImmediat = voisinImmediat->voisin;
         }
         if(nombreVoisins == sousMonceaux.size()) //reallocation du vecteur
             sousMonceaux.resize(nombreVoisins+1);
-        sousMonceaux[nombreVoisins] = NULL;
+        sousMonceaux[nombreVoisins] = nullptr;
 
             // on fait la premiere passe en combinant des paires de sous heap, de gauche a droite
         int i = 0;
@@ -190,28 +197,28 @@ Noeud * PairingH::fusionPassePasse(Noeud * voisinImmediat) const
  */
 void PairingH::parcoursDOT(Noeud * p_debut) const
 {
-	if(p_debut->enfantGauche != NULL){
+	if(p_debut->enfantGauche != nullptr){
 		Noeud * noeudKid = p_debut->enfantGauche;
-		std::cout << p_debut->distance << " -> " << noeudKid->distance << " [color=blue]" << std::endl;
-		std::cout << noeudKid->distance << " -> " << p_debut->distance << " [color=black]" << std::endl;
-		if(noeudKid->voisin != NULL){
+		std::cout << p_debut->m_sommet << p_debut->distance << " -> " << noeudKid->m_sommet << noeudKid->distance << " [color=blue]" << std::endl;
+		std::cout << noeudKid->m_sommet << noeudKid->distance << " -> " << p_debut->m_sommet << p_debut->distance << " [color=black]" << std::endl;
+		if(noeudKid->voisin != nullptr){
 			Noeud * noeudKidVoisin = noeudKid->voisin;
-			std::cout << noeudKid->distance << " -> " << noeudKidVoisin->distance << " [color=red]"<< std::endl;
-			std::cout << "{rank = same; " << noeudKid->distance << "; "<< noeudKidVoisin->distance << ";}" << std::endl;
-			std::cout << noeudKidVoisin->distance << " -> " << p_debut->distance << " [color=black]" << std::endl;
-			while(noeudKidVoisin != NULL){
-				if(noeudKidVoisin->enfantGauche != NULL){
+			std::cout << noeudKid->m_sommet << noeudKid->distance << " -> " << noeudKidVoisin->m_sommet << noeudKidVoisin->distance << " [color=red]"<< std::endl;
+			std::cout << "{rank = same; " << noeudKid->m_sommet << noeudKid->distance << "; "<< noeudKidVoisin->m_sommet << noeudKidVoisin->distance << ";}" << std::endl;
+			std::cout << noeudKidVoisin->m_sommet << noeudKidVoisin->distance << " -> " << p_debut->m_sommet << p_debut->distance << " [color=black]" << std::endl;
+			while(noeudKidVoisin != nullptr){
+				if(noeudKidVoisin->enfantGauche != nullptr){
 					parcoursDOT(noeudKidVoisin);
 				}
-				if(noeudKidVoisin->voisin != NULL){
-					std::cout << noeudKidVoisin->distance << " -> " << noeudKidVoisin->voisin->distance << " [color=red]"<< std::endl;
-					std::cout << "{rank = same; " << noeudKidVoisin->distance << "; "<< noeudKidVoisin->voisin->distance << ";}" << std::endl;
-					std::cout << noeudKidVoisin->voisin->distance << " -> " << p_debut->distance << " [color=black]" << std::endl;
+				if(noeudKidVoisin->voisin != nullptr){
+					std::cout << noeudKidVoisin->m_sommet << noeudKidVoisin->distance << " -> " << noeudKidVoisin->voisin->m_sommet << noeudKidVoisin->voisin->distance << " [color=red]"<< std::endl;
+					std::cout << "{rank = same; " << noeudKidVoisin->m_sommet << noeudKidVoisin->distance << "; "<< noeudKidVoisin->voisin->m_sommet << noeudKidVoisin->voisin->distance << ";}" << std::endl;
+					std::cout << noeudKidVoisin->voisin->m_sommet << noeudKidVoisin->voisin->distance << " -> " << p_debut->m_sommet << p_debut->distance << " [color=black]" << std::endl;
 				}
 				noeudKidVoisin = noeudKidVoisin->voisin;
 			}
 		}
-		if(noeudKid->enfantGauche != NULL){
+		if(noeudKid->enfantGauche != nullptr){
 			parcoursDOT(noeudKid);
 		}
 	}

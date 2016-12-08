@@ -240,41 +240,55 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
 int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
 {
     if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
-
+//    for(auto kv: m_arcs){
+//    	for(auto kw: kv.second){
+//    		std::cout << kv.first << "->" << kw.first << " poids : " << kw.second.first << std::endl;
+//    	}
+//    }
     std::unordered_map<unsigned int, std::pair<Noeud *, unsigned int>> sommetsNodes;
-   // std::unordered_map<sommet depart, std::pair<ptr_noeud associé au sommet dans le heap, predecesseur>> sommetsNodes;
+   // <sommet depart, <ptr_noeud associé au sommet dans le heap, predecesseur>>
 
-    PairingH heap; //constructeur par defaut
+    PairingH heap;
     // dans le heap chaque Noeud a la distance et le sommet associé au noeud
 
-    unsigned int max_poids = 9999999;
+    //on ajoute la racine en premier (noeud initial)
+    sommetsNodes[numOrigine] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(1, numOrigine), 0);
 
-    for(auto kv: m_arcs){
+    for(auto kv: m_arcs){ //on construit le heap
     	unsigned int le_sommet = (kv.first);
-    	if(le_sommet == numOrigine){
-    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(le_sommet, 0), 0);
+//    	std::cout << "ajout sommet " << le_sommet << std::endl;
+    	if(le_sommet != numOrigine){
+    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(9999, le_sommet), 0);
     	}
-    	else{
-    		sommetsNodes[le_sommet] = std::pair<Noeud *, unsigned int>(heap.ajouterNoeud(le_sommet, max_poids), 0);
-    	}
+//    	std::cout << "racine " << heap.racine->sommet << " distance " << heap.racine->distance << std::endl;
     }
-    std::cout << "taille du heap : " << heap.nombreNoeuds() << std::endl; //4604
 
-    for(int i = 0; i < nbSommets; i++){ // 2 ---nbSommets
-//    	std::cout << heap.getRacine()->getDistance() << std::endl;
-    	unsigned int sommetMin = heap.getRacine()->getSommet(); //noeud dans Q tel que d(u) est minimal = racine du heap
-    	liste_arcs arcs = m_arcs[sommetMin];
-    	heap.retirerRacine(); //la racine est maintenant solutionnée
-    	for(auto sommetVoisin : arcs){
-    		int temp = heap.getRacine()->getDistance() + sommetVoisin.second.first; //est ce que le poids est le 2param..
-//    		std::cout << "le temp => " << heap.getRacine()->getDistance() << "+" << sommetVoisin.second.first << " = " << temp << std::endl;
-    		int dist = sommetsNodes[sommetVoisin.first].first->getDistance();
-    		if(temp < dist){
-    			heap.diminuerDistance(sommetsNodes[sommetVoisin.first].first, temp); //on change la distance du sommet voisin
-    			sommetsNodes[sommetVoisin.first].second = sommetMin; //on change le predecesseur
+    for(int i = 0; i < nbSommets; ++i){
+
+    	unsigned int u_etoile = heap.racine->m_sommet; //u* est noeud dans Q tel que d(u) est minimal = racine du heap
+    	int dist_u_etoile = heap.racine->distance;
+
+    	std::cout << "la racine est : " << u_etoile << " et sa distance est : " << dist_u_etoile << std::endl;
+
+    	heap.retirerRacine();
+
+    	std::cout << heap.nombreNoeuds() << std::endl;
+
+    	for(auto u : m_arcs[u_etoile]){ //on itère sur tous les u adj a u*
+
+			int temp { dist_u_etoile + u.second.first }; // temp = d(u*) + w(u*, u)
+    		std::cout << "temp = d(u*) + w(u*, u) <=> " << temp << std::endl;
+
+    		int dist_u = sommetsNodes[u.first].first->distance; //d(u)
+
+    		if(temp < dist_u){
+    			Noeud * u_noeud =  sommetsNodes[u.first].first;
+    			heap.diminuerDistance(u_noeud, temp); //d(u) = temp
+    			sommetsNodes[u.first].second = u_etoile; //p(u) = u*
+    			std::cout << "sommet " << u.first << " a passe de " << dist_u << " a " << u_noeud->distance << std::endl;
+    			std::cout << "la racine est devenue : " << heap.racine->m_sommet << " avec une distance de " << heap.racine->distance << std::endl;
     		}
     	}
-//    	std::cout << "la racine est " << heap.getRacine()->getSommet() << "et sa distance est " << heap.getRacine()->getDistance() << std::endl;
     }
 
     chemin.clear();
@@ -294,7 +308,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
     	}
     }
 
-    return 0; //sommetsNodes.find(ptr_sommetDest)->second.first->getDistance();
+    return 0; //sommetsNodes.find(ptr_sommetDest)->second.first->distance;
 }
 
 
